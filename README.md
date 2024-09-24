@@ -158,5 +158,3 @@ add the script above then execute
     sudo chmod +x /etc/rc.local
     
     reboot
-
-r
