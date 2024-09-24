@@ -9,7 +9,7 @@ WiFi Hotspot with Anti-Tethering enables (TTL = 1 ) will change into (TTL= 65)
 from this
 [ 64 bytes from 10.0.0.1: icmp_seq=1 `ttl=1` time=1.72 ms]
 to this
-[64 bytes from 10.0.0.1: icmp_seq=1 `ttl=64` time=1.72 ms]
+[64 bytes from 10.0.0.1: icmp_seq=1 `ttl=65` time=1.72 ms]
 
 
 
