@@ -18,7 +18,7 @@ to this
       opkg update ; opkg install iptables iptables-mod-ipopt iptables-zz-legacy -y
 
 
-# For OPENWRT
+# For OpenWRT/SBC's
 
 - Note: Please change your `Router/SBC's current Interfaces` in the script below for `Incoming/Outgoing Packets and IP addresses` so that iptables can route all traffic on the set iptables rules.
 - To check the current network interfaces type `ip address ` 
