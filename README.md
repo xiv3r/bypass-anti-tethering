@@ -42,24 +42,24 @@ logger -t firewall-custom "Starting custom firewall rules"
 ## Routers (as the client) require their own TTL/HL increment script.
 
 # IPv4
-iptables -t mangle -A PREROUTING -i radi0 -j TTL --ttl-inc 64
-iptables -t mangle -I POSTROUTING -o br-lan -j TTL --ttl-inc 64
+iptables -t mangle -A PREROUTING -i radi0 -j TTL --ttl-set 65
+iptables -t mangle -I POSTROUTING -o br-lan -j TTL --ttl-set 65
 
 # IPv6
-ip6tables -t mangle -A PREROUTING ! -p icmpv6 -i wlan0 -j HL --hl-inc 64
-ip6tables -t mangle -I POSTROUTING ! -p icmpv6 -o br-lan -j HL --hl-inc 64
+ip6tables -t mangle -A PREROUTING ! -p icmpv6 -i wlan0 -j HL --hl-set 65
+ip6tables -t mangle -I POSTROUTING ! -p icmpv6 -o br-lan -j HL --hl-set 65
 
 # Set TTL for outgoing packets on wlan0
-iptables -t mangle -A POSTROUTING -o (ex. wlan0) -j TTL --ttl-inc 64
+iptables -t mangle -A POSTROUTING -o (ex. wlan0) -j TTL --ttl-set 65
 
 # Increment TTL for incoming packets on wlan0
-iptables -t mangle -A PREROUTING -i (ex. wlan0) -j TTL --ttl-inc 64
+iptables -t mangle -A PREROUTING -i (ex. wlan0) -j TTL --ttl-set 65
 
 # Set TTL for outgoing packets from 10.0.0.1
-iptables -t mangle -A POSTROUTING -s (ex. 10.0.0.1) -j TTL --ttl-inc 64
+iptables -t mangle -A POSTROUTING -s (ex. 10.0.0.1) -j TTL --ttl-set 65
 
 # Set TTL for incoming packets destined to 10.0.0.1
-iptables -t mangle -A PREROUTING -d (ex. 10.0.0.1) -j TTL --ttl-inc 64
+iptables -t mangle -A PREROUTING -d (ex. 10.0.0.1) -j TTL --ttl-set 65
 
 }
 
@@ -68,18 +68,18 @@ stop() {
 logger -t firewall-custom "Stopping custom firewall rules"
 
 # Remove TTL setting for outgoing packets on wlan0
-iptables -t mangle -D POSTROUTING -o (ex. wlan0) -j TTL --ttl-inc 64
+iptables -t mangle -D POSTROUTING -o (ex. wlan0) -j TTL --ttl-set 65
 
 # Remove TTL increment for incoming packets on wlan0
-iptables -t mangle -D PREROUTING -i (ex. wlan0) -j TTL --ttl-inc 64
+iptables -t mangle -D PREROUTING -i (ex. wlan0) -j TTL --ttl-set 65
 
 logger -t ttl-custom "Removing TTL setting for 10.0.0.1"
 
 # Remove TTL setting for outgoing packets from 10.0.0.1
-iptables -t mangle -D POSTROUTING -s ( ex. 10.0.0.1) -j TTL --ttl-inc 64
+iptables -t mangle -D POSTROUTING -s ( ex. 10.0.0.1) -j TTL --ttl-set 65
 
 # Remove TTL setting for incoming packets destined to 10.0.0.1
-iptables -t mangle -D PREROUTING -d (ex. 10.0.0.1) -j TTL --ttl-inc 64
+iptables -t mangle -D PREROUTING -d (ex. 10.0.0.1) -j TTL --ttl-set 65
 }
 ```
 
@@ -116,36 +116,36 @@ iptables -t mangle -D PREROUTING -d (ex. 10.0.0.1) -j TTL --ttl-inc 64
 ## -A: last rule in chain, -I: head /first rule in chain (by default).
 
 # IPv4
-iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-inc 64
-iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-inc 64
+iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 65
+iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-set 65
 
 #IPv6
-ip6tables -t mangle -A PREROUTING ! -p icmpv6 -i wlan0 -j HL --hl-inc 64
-ip6tables -t mangle -I POSTROUTING ! -p icmpv6 -o wlan0 -j HL --hl-inc 64
+ip6tables -t mangle -A PREROUTING ! -p icmpv6 -i wlan0 -j HL --hl-set 65
+ip6tables -t mangle -I POSTROUTING ! -p icmpv6 -o wlan0 -j HL --hl-set 65
 
 # Set TTL for outgoing packets on wlan0
-iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-inc 64
+iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 65
 
 # Increment TTL for incoming packets on wlan0
-iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-inc 64
+iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 65
 
 # Set TTL for outgoing packets from 10.0.0.1
-iptables -t mangle -A POSTROUTING -s 10.0.0.1 -j TTL --ttl-inc 64
+iptables -t mangle -A POSTROUTING -s 10.0.0.1 -j TTL --ttl-set 65
 
 # Set TTL for incoming packets destined to 10.0.0.1
-iptables -t mangle -A PREROUTING -d 10.0.0.1 -j TTL --ttl-inc 64
+iptables -t mangle -A PREROUTING -d 10.0.0.1 -j TTL --ttl-set 65
 
 # Remove TTL setting for outgoing packets on wlan0
-iptables -t mangle -D POSTROUTING -o wlan0 -j TTL --ttl-inc 64
+iptables -t mangle -D POSTROUTING -o wlan0 -j TTL --ttl-set 65
 
 # Remove TTL increment for incoming packets on wlan0
-iptables -t mangle -D PREROUTING -i wlan0 -j TTL --ttl-inc 64
+iptables -t mangle -D PREROUTING -i wlan0 -j TTL --ttl-set 65
 
 # Remove TTL setting for outgoing packets from 10.0.0.1
-iptables -t mangle -D POSTROUTING -s 10.0.0.1 -j TTL --ttl-inc 64
+iptables -t mangle -D POSTROUTING -s 10.0.0.1 -j TTL --ttl-set 65
 
 # Remove TTL setting for incoming packets destined to 10.0.0.1
-iptables -t mangle -D PREROUTING -d 10.0.0.1 -j TTL --ttl-inc 64
+iptables -t mangle -D PREROUTING -d 10.0.0.1 -j TTL --ttl-set 65
 
 ```
 # Autorun on Boot
