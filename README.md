@@ -1,23 +1,23 @@
 # Bypass Any Anti-Tethering WiFi Hotspot
-## [--ttl-inc/--ttl-set](https://www.linuxtopia.org/Linux_Firewall_iptables/x4799.html) overview
+### [--ttl-inc/--ttl-set](https://www.linuxtopia.org/Linux_Firewall_iptables/x4799.html) overview
+
+#### --ttl-inc 1 it doesn't touch TTL as routed. This also "hides" router from traceroute as it doesn't touch TTL.
+
+#### --ttl-set 64 it touch TTL as routed opposites to --ttl-inc.
 
 ![img](https://github.com/user-attachments/assets/ed1ef5f9-f5eb-43f0-bed9-b75da4380417)
 
-
 - Example:
-WiFi Hotspot with Anti-Tethering enables (TTL = 1 ) will change into (TTL= 65)
-
+WiFi Hotspot with Anti-Tethering enables (TTL= 1) will change into (TTL= 65)
 from this
 [ 64 bytes from 10.0.0.1: icmp_seq=1 `ttl=1` time=1.72 ms]
 to this
 [64 bytes from 10.0.0.1: icmp_seq=1 `ttl=65` time=1.72 ms]
 
 
-
 - ## Dependencies for OpenWRT
 
       opkg update ; opkg install iptables iptables-mod-ipopt iptables-zz-legacy -y
-
 
 # For OpenWRT/SBC's
 
@@ -38,19 +38,15 @@ start() {
 
 logger -t firewall-custom "Starting custom firewall rules"
 
-# Also bypass TTL/HL detections for other devices that connect to this device.
+# Bypass TTL/HL detections for other devices that connect to this device.
 ## Routers (as the client) require their own TTL/HL increment script.
-## Tethering interfaces -> rndis0: USB, wlan1: Wi-Fi, bt-pan: Bluetooth.
-## -A: last rule in chain, -I: head /first rule in chain (by default).
 
 # IPv4
-iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-inc 65
-
-iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-inc 65
+iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 65
+iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-set 65
 
 # IPv6
 ip6tables -t mangle -A PREROUTING ! -p icmpv6 -i wlan0 -j HL --hl-inc 65
-
 ip6tables -t mangle -I POSTROUTING ! -p icmpv6 -o wlan0 -j HL --hl-inc 65
 
 # Set TTL for outgoing packets on wlan0
@@ -119,13 +115,13 @@ iptables -t mangle -D PREROUTING -d (ex. 10.0.0.1) -j TTL --ttl-set 65
 ## Tethering interfaces -> rndis0: USB, wlan1: Wi-Fi, bt-pan: Bluetooth.
 ## -A: last rule in chain, -I: head /first rule in chain (by default).
 
-iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-inc 64
+# IPv4
+iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 64
+iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-set 64
 
-iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-inc 64
-
-ip6tables -t mangle -A PREROUTING ! -p icmpv6 -i wlan0 -j HL --hl-inc 64
-
-ip6tables -t mangle -I POSTROUTING ! -p icmpv6 -o wlan0 -j HL --hl-inc 64
+#IPv6
+ip6tables -t mangle -A PREROUTING ! -p icmpv6 -i wlan0 -j HL --hl-set 64
+ip6tables -t mangle -I POSTROUTING ! -p icmpv6 -o wlan0 -j HL --hl-set 64
 
 # Set TTL for outgoing packets on wlan0
 iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 65
