@@ -37,6 +37,16 @@ start() {
 
 logger -t firewall-custom "Starting custom firewall rules"
 
+# Also bypass TTL/HL detections for other devices that connect to this device.
+## Routers (as the client) require their own TTL/HL increment script.
+## Tethering interfaces -> rndis0: USB, wlan1: Wi-Fi, bt-pan: Bluetooth.
+## -A: last rule in chain, -I: head /first rule in chain (by default).
+
+iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-inc 65
+iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-inc 65
+ip6tables -t mangle -A PREROUTING ! -p icmpv6 -i wlan0 -j HL --hl-inc 65
+ip6tables -t mangle -I POSTROUTING ! -p icmpv6 -o wlan0 -j HL --hl-inc 65
+
 # Set TTL for outgoing packets on wlan0
 iptables -t mangle -A POSTROUTING -o (ex. wlan0) -j TTL --ttl-set 65
 
@@ -91,6 +101,16 @@ iptables -t mangle -D PREROUTING -d (ex. 10.0.0.1) -j TTL --ttl-set 65
 
 ```
 #!/bin/sh
+
+# Also bypass TTL/HL detections for other devices that connect to this device.
+## Routers (as the client) require their own TTL/HL increment script.
+## Tethering interfaces -> rndis0: USB, wlan1: Wi-Fi, bt-pan: Bluetooth.
+## -A: last rule in chain, -I: head /first rule in chain (by default).
+
+iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-inc 65
+iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-inc 65
+ip6tables -t mangle -A PREROUTING ! -p icmpv6 -i wlan0 -j HL --hl-inc 65
+ip6tables -t mangle -I POSTROUTING ! -p icmpv6 -o wlan0 -j HL --hl-inc 65
 
 # Set TTL for outgoing packets on wlan0
 iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 65
