@@ -1,5 +1,7 @@
 # Bypass Any Anti-Tethering WiFi Hotspot
 
+![img](https://github.com/user-attachments/assets/ed1ef5f9-f5eb-43f0-bed9-b75da4380417)
+
 
 - Example:
 WiFi Hotspot with Anti-Tethering enables (TTL = 1 ) will change into (TTL= 65)
