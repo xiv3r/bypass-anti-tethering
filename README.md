@@ -1,4 +1,6 @@
 # Bypass Any Anti-Tethering WiFi Hotspot
+
+
 - Example:
 WiFi Hotspot with Anti-Tethering enables (TTL = 1 ) will change into (TTL= 65)
 
@@ -84,6 +86,7 @@ iptables -t mangle -D PREROUTING -d (ex. 10.0.0.1) -j TTL --ttl-set 65
       sudo chmod +x /etc/anti-tethering.sh
 
 - Insert this script into etc/anti-tethering.sh
+
 ```
 #!/bin/sh
 
@@ -115,7 +118,7 @@ iptables -t mangle -D PREROUTING -d 10.0.0.1 -j TTL --ttl-set 65
 # Autorun on Boot
 
     sudo crontab -e
-    
-- insert 
 
-      @reboot sh /etc/anti-tethering.sh
+Insert
+
+    @reboot sh /etc/anti-tethering.sh
