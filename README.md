@@ -96,11 +96,17 @@ iptables -t mangle -D PREROUTING -d (ex. 10.0.0.1) -j TTL --ttl-set 65
 
 - Creating and filling the following file:
 
+- Must execute after boot. 
+
       sudo nano /etc/anti-tethering.sh
   
       sudo chmod +x /etc/anti-tethering.sh
 
-- Insert this script into etc/anti-tethering.sh
+- ## To Run:
+
+      sudo sh /etc/anti-tethering.sh
+
+- Insert this script into /etc/anti-tethering.sh
 
 ```
 #!/bin/sh
@@ -145,8 +151,12 @@ iptables -t mangle -D PREROUTING -d 10.0.0.1 -j TTL --ttl-set 65
 ```
 # Autorun on Boot
 
-    sudo crontab -e
+    sudo nano /etc/rc.local 
 
-Insert
+add the script above then execute
 
-    @reboot sh /etc/anti-tethering.sh
+    sudo chmod +x /etc/rc.local
+    
+    reboot
+
+r
