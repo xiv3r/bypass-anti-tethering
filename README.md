@@ -42,9 +42,12 @@ logger -t firewall-custom "Starting custom firewall rules"
 ## Tethering interfaces -> rndis0: USB, wlan1: Wi-Fi, bt-pan: Bluetooth.
 ## -A: last rule in chain, -I: head /first rule in chain (by default).
 
-iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-inc 65
-iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-inc 65
+iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-inc 64
+
+iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-inc 64
+
 ip6tables -t mangle -A PREROUTING ! -p icmpv6 -i wlan0 -j HL --hl-inc 65
+
 ip6tables -t mangle -I POSTROUTING ! -p icmpv6 -o wlan0 -j HL --hl-inc 65
 
 # Set TTL for outgoing packets on wlan0
@@ -107,10 +110,13 @@ iptables -t mangle -D PREROUTING -d (ex. 10.0.0.1) -j TTL --ttl-set 65
 ## Tethering interfaces -> rndis0: USB, wlan1: Wi-Fi, bt-pan: Bluetooth.
 ## -A: last rule in chain, -I: head /first rule in chain (by default).
 
-iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-inc 65
-iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-inc 65
-ip6tables -t mangle -A PREROUTING ! -p icmpv6 -i wlan0 -j HL --hl-inc 65
-ip6tables -t mangle -I POSTROUTING ! -p icmpv6 -o wlan0 -j HL --hl-inc 65
+iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-inc 64
+
+iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-inc 64
+
+ip6tables -t mangle -A PREROUTING ! -p icmpv6 -i wlan0 -j HL --hl-inc 64
+
+ip6tables -t mangle -I POSTROUTING ! -p icmpv6 -o wlan0 -j HL --hl-inc 64
 
 # Set TTL for outgoing packets on wlan0
 iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 65
