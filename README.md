@@ -1,4 +1,5 @@
 # Bypass Any Anti-Tethering WiFi Hotspot
+## [--ttl-inc/--ttl-set](https://www.linuxtopia.org/Linux_Firewall_iptables/x4799.html) overview
 
 ![img](https://github.com/user-attachments/assets/ed1ef5f9-f5eb-43f0-bed9-b75da4380417)
 
@@ -45,19 +46,14 @@ logger -t firewall-custom "Starting custom firewall rules"
 # IPv4
 iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-inc 65
 
-iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-set 65
-
 iptables -t mangle -I POSTROUTING -o wlan0 -j TTL --ttl-inc 65
 
 # IPv6
-ip6tables -t mangle -I POSTROUTING -o wlan0 -j HL --hl-set 65
-
 ip6tables -t mangle -A PREROUTING ! -p icmpv6 -i wlan0 -j HL --hl-inc 65
 
 ip6tables -t mangle -I POSTROUTING ! -p icmpv6 -o wlan0 -j HL --hl-inc 65
 
-# Set TTL for outgoi
-ng packets on wlan0
+# Set TTL for outgoing packets on wlan0
 iptables -t mangle -A POSTROUTING -o (ex. wlan0) -j TTL --ttl-set 65
 
 # Increment TTL for incoming packets on wlan0
