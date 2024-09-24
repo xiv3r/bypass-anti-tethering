@@ -112,3 +112,10 @@ iptables -t mangle -D POSTROUTING -s 10.0.0.1 -j TTL --ttl-set 65
 iptables -t mangle -D PREROUTING -d 10.0.0.1 -j TTL --ttl-set 65
 
 ```
+# Autorun on Boot
+
+    sudo crontab -e
+    
+- insert 
+
+      @reboot sh /etc/anti-tethering.sh
