@@ -99,7 +99,7 @@ iptables -t mangle -A POSTROUTING -s 10.0.0.1 -j TTL --ttl-set 65
 # Set TTL for incoming packets destined to 10.0.0.1
 iptables -t mangle -A PREROUTING -d 10.0.0.1 -j TTL --ttl-set 65
 
-# Remove TTL setting for outgoing packets on 10.0.0.1
+# Remove TTL setting for outgoing packets on wlan0
 iptables -t mangle -D POSTROUTING -o wlan0 -j TTL --ttl-set 65
 
 # Remove TTL increment for incoming packets on wlan0
