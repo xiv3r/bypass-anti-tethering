@@ -15,15 +15,20 @@ AP 10.0.0.1 ttl=1 -> Linux Bridge/Extender -> 10.0.0.1 ttl=64
 iptables -F
 iptables -t mangle -F
 
-# Redirect all traffic from wlan0 to eth0
-iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
-iptables -A FORWARD -i eth0 -o wlan0 -m state --state ESTABLISHED,RELATED -j ACCEPT
-
-# Apply TTL 64 for outbound traffic (leaving interface eth0)
+# Apply TTL 64 for outbound traffic (leaving interface wlan0)
 iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 64
 
-# Apply TTL 64 for inbound traffic (entering interface eth0)
+# Apply TTL 64 for inbound traffic (entering interface wlan0)
 iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 64
+
+# Allow forwarding of traffic from wlan0 to eth0
+iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+
+# Allow returning traffic from eth0 to wlan0
+iptables -A FORWARD -i eth0 -o wlan0 -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Optionally, if eth0 is connected to the internet, masquerade outbound traffic on eth0
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 exit 0
 ```
