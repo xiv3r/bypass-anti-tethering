@@ -13,8 +13,10 @@ AP 10.0.0.1 ttl=1 -> Linux Bridge/Extender -> 10.0.0.1 ttl=64
 ```
 # Flush table rules
 iptables -F
+iptables -t mangle -F
 
-# Append ttl before prerouting ex. TTL=1 and Output TTL=64
+# Append ttl both prerouting and postrouting ex. TTL=1 and Output TTL=64
+iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 64
 iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 64
 
 # Redirect all traffic from wlan0 to eth0
@@ -31,3 +33,4 @@ exit 0
 ## How to clear Iptables existing rules?
 
     iptables -F
+    iptables -t mangle -F
