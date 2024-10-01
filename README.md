@@ -9,10 +9,13 @@ AP 10.0.0.1 ttl=1 -> Linux Bridge/Extender -> 10.0.0.1 ttl=64
 
     sudo apt update ; sudo apt install iptables -y
 
+* Note: Iptables `NAT` works properly on version 1.8.10
+
 ## Run permanently after Boot `nano /etc/rc.local`
 ```
 # Flush table rules
 iptables -F
+iptables -t nat -F
 iptables -t mangle -F
 
 # Apply TTL 64 for outbound traffic (leaving interface wlan0)
@@ -40,4 +43,5 @@ exit 0
 ## How to clear Iptables existing rules?
 
     iptables -F
+    iptables -t nat -F
     iptables -t mangle -F
