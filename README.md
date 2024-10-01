@@ -1,8 +1,8 @@
-<h1 align="center"> <summary>
+ <h1 align="center"> <summary>
       
-   [Bypass Anti-Tethering (Time To Live and Hop Limit) for Wifi Repeater](https://github.com/xiv3r/anti-tethering-bypasser)
+##   [Bypass Anti-Tethering (TTL /HL)](https://github.com/xiv3r/anti-tethering-bypasser)
    
-AP 10.0.0.1 ttl=1 -> Linux Bridge/Extender -> 10.0.0.1 ttl=64
+10.0.0.1 ttl=1 => WiFi Repeater/Extender => 10.0.0.1 ttl=64
 </summary> </h1>
 
 ## Dependencies 
