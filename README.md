@@ -16,14 +16,15 @@
 
 ### Note!
 - Iptables `NAT` works properly on version 1.8.10
-- Run permanently after Boot `nano /etc/rc.local`
-- Applicable only for Repeater, extender and Bridge mode.
-- Need to replace `br-lan` into `eth0` if you're not using openwrt.
-- Take not that the `wlan0` is your `ISP` and the destination is `br-lan/eth0`.
+- Run permanently after Boot `nano /etc/rc.local` after that `chmod +x /etc/rc.local`.
+- Applicable only for openwrt router, linux, rooted phones.
+- Need to replace `br-lan` into `eth0` if you're not using openwrt and `br0` for mobile hotspot.
+- Take not that the `wlan0` is your `ISP` and the destination is `br-lan/eth0/br0`.
 
 # Iptables | Ip6tables for IPv4 and IPv6
 
 ```
+# IPv4 Iptables
 # Flush all rules in the filter table
 iptables -F
 
@@ -47,6 +48,7 @@ iptables -P FORWARD ACCEPT
 
 ##___________________________________________________
 
+#IPv6 Ip6tables
 # Flush all rules in the filter table
 ip6tables -F
 
