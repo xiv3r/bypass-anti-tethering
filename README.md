@@ -6,11 +6,20 @@
 </summary> </h1>
 
 ## Dependencies 
+   - linux
 
     sudo apt update ; sudo apt install iptables ip6tables -y
+  
+   - openwrt
+   
+    opkg update ; opkg install iptables ip6tables
 
-* Note: Iptables `NAT` works properly on version 1.8.10
-• Run permanently after Boot `nano /etc/rc.local`
+### Note!
+- Iptables `NAT` works properly on version 1.8.10
+- Run permanently after Boot `nano /etc/rc.local`
+- Applicable only for Repeater, extender and Bridge mode.
+- Need to replace `br-lan` into `eth0` if you're not using openwrt.
+- Take not that the `wlan0` is your `ISP` and the destination is `br-lan/eth0`.
 
 # Iptables | Ip6tables for IPv4 and IPv6
 
