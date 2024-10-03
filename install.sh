@@ -1,7 +1,11 @@
-#!/bin/bash
+# Linux dependencies
+sudo apt update ; sudo apt install iptables -y
 
+# Openwrt dependcies
+opkg install iptables-mod-ipopt kmod-ipt-ipopt kmod-ipt-nat iptables-zz-legacy iptables ip6tables ip6tables-zz-legacy ip6tables-mod-nat kmod-ipt-nat6 kmod-ip6tables
 
-
+echo "#!/bin/bash" >> /etc/rc.local
+# Clearing rc.local
 echo "" > /etc/rc.local
 # IPv4 Iptables
 # Flush all rules in the filter table
