@@ -12,7 +12,8 @@
   
    - OpenWRT
    
-    opkg update ; opkg install iptables ip6tables
+    opkg update ; opkg install wget iptables-mod-ipopt kmod-ipt-ipopt kmod-ipt-nat iptables-zz-legacy iptables ip6tables ip6tables-zz-legacy ip6tables-mod-nat kmod-ipt-nat6 kmod-ip6tables
+    
 
 # Auto Install for Linux
    
