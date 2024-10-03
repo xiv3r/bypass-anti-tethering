@@ -40,14 +40,11 @@ else
     exit 1
 fi
 
-# clearing rc.local
-echo "" > /etc/rc.local
-
+echo "Installing iptables rule in /etc/rc.local..."
 # Header
-echo "#!/bin/bash" >> /etc/rc.local
+echo "#!/bin/bash" > /etc/rc.local
 
 # IPv4 Iptables
-echo "Installing Iptables in /etc/rc.local..."
 
 # Flush all rules in the filter table
 echo "iptables -F" >> /etc/rc.local
@@ -98,4 +95,6 @@ echo "exit 0" >> /etc/rc.local
 
 chmod +x /etc/rc.local
 
-echo "Done Installing into /etc/rc.local"
+echo "Done Installing iptables and ip6tables into /etc/rc.local..."
+
+echo "Required router reboot to apply the settings"
