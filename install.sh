@@ -47,7 +47,7 @@ echo "" > /etc/rc.local
 echo "#!/bin/bash" >> /etc/rc.local
 
 # IPv4 Iptables
-echo "Installing Iptables..."
+echo "Installing Iptables in /etc/rc.local..."
 
 # Flush all rules in the filter table
 echo "iptables -F" >> /etc/rc.local
@@ -62,16 +62,16 @@ echo "iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 64" >> /etc/rc.
 echo "iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 64" >> /etc/rc.local
 
 # Allow forwarding of packets from wlan0 to br-lan
-echo "iptables -A FORWARD -i wlan0 -o br-lan -j ACCEPT" >> /etc/rc.local
+echo "iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT" >> /etc/rc.local
 
 # Allow forwarding of packets br-lan to wlan0
-echo "iptables -A FORWARD -i br-lan -o wlan0 -j ACCEPT" >> /etc/rc.local
+echo "iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT" >> /etc/rc.local
 
 # Ensure FORWARD chain policy is set to ACCEPT
 echo "iptables -P FORWARD ACCEPT" >> /etc/rc.local
 
 #IPv6 Ip6tables
-echo "Installing Ip6tables..."
+echo "Installing Ip6tables rule in /etc/rc.local..."
 
 # Flush all rules in the filter table
 echo "ip6tables -F" >> /etc/rc.local
@@ -86,10 +86,10 @@ echo "ip6tables -t mangle -A PREROUTING -i wlan0 -j HL --hl-set 64" >> /etc/rc.l
 echo "ip6tables -t mangle -A POSTROUTING -o wlan0 -j HL --hl-set 64" >> /etc/rc.local
 
 # Allow forwarding of packets from wlan0 to br-lan
-echo "ip6tables -A FORWARD -i wlan0 -o br-lan -j ACCEPT" >> /etc/rc.local
+echo "ip6tables -A FORWARD -i wlan0 -o eth0 -j ACCEPT" >> /etc/rc.local
 
 # Allow forwarding of packets from br-lan to wlan0
-echo "ip6tables -A FORWARD -i br-lan -o wlan0 -j ACCEPT" >> /etc/rc.local
+echo "ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT" >> /etc/rc.local
 
 # Ensure FORWARD chain policy is set to ACCEPT
 echo "ip6tables -P FORWARD ACCEPT" >> /etc/rc.local
@@ -98,4 +98,4 @@ echo "exit 0" >> /etc/rc.local
 
 chmod +x /etc/rc.local
 
-echo "Done Installing"
+echo "Done Installing into /etc/rc.local"
