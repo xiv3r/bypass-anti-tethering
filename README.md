@@ -5,25 +5,15 @@
 10.0.0.1 ttl=1 => WiFi Repeater/Extender => 10.0.0.1 ttl=64
 </summary> </h1>
 
-## Dependencies 
-   - Linux
-
-    sudo apt update ; sudo apt install iptables -y
-  
-   - OpenWRT
-   
-    opkg update ; opkg install wget iptables-mod-ipopt kmod-ipt-ipopt kmod-ipt-nat iptables-zz-legacy iptables ip6tables ip6tables-zz-legacy ip6tables-mod-nat kmod-ipt-nat6 kmod-ip6tables
-    
-
 # Auto Install for Linux
    
     sudo -i
     
-    sudo apt update ; sudo apt install curl ; https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo sh
+    sudo apt update ; sudo apt install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo sh
 
 # Auto Install for OpenWRT
 
-    opkg update ; opkg install curl ; https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
+    opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
     
 
 ### Note!
