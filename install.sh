@@ -18,17 +18,13 @@ is_debian() {
 
 # Function to install packages on OpenWRT
 install_openwrt_packages() {
-    echo "Updating package list on OpenWRT..."
-    opkg update
-    echo "Installing packages on OpenWRT: $OPENWRT_PACKAGES"
+    echo "Installing Dependencies on OpenWRT: $OPENWRT_PACKAGES"
     opkg install $OPENWRT_PACKAGES
 }
 
 # Function to install packages on Debian-based Linux
 install_generic_linux_packages() {
-    echo "Updating package list on generic Linux..."
-    sudo apt update
-    echo "Installing packages on generic Linux: $GENERIC_LINUX_PACKAGES"
+    echo "Installing Dependencies on Linux: $GENERIC_LINUX_PACKAGES"
     sudo apt install -y $GENERIC_LINUX_PACKAGES
 }
 
