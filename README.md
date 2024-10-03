@@ -6,13 +6,24 @@
 </summary> </h1>
 
 ## Dependencies 
-   - linux
+   - Linux
 
-    sudo apt update ; sudo apt install iptables ip6tables -y
+    sudo apt update ; sudo apt install iptables -y
   
-   - openwrt
+   - OpenWRT
    
     opkg update ; opkg install iptables ip6tables
+
+# Auto Install for Linux
+   
+    sudo -i
+    
+    sudo apt update ; sudo apt install curl ; https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo sh
+
+# Auto Install for OpenWRT
+
+    opkg update ; opkg install curl ; https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
+    
 
 ### Note!
 - Iptables `NAT` works properly on version 1.8.10
