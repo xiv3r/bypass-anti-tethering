@@ -7,8 +7,6 @@
 
 # Auto Install for Linux
    
-    sudo -i
-    
     sudo apt update ; sudo apt install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo sh
 
 # Auto Install for OpenWRT
