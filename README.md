@@ -15,13 +15,11 @@
     
 
 ### Note!
-- Iptables `NAT` works properly on version 1.8.10
-- Run permanently after Boot `nano /etc/rc.local` after that `chmod +x /etc/rc.local`.
-- Applicable only for openwrt router, linux, rooted phones.
-- Need to replace `br-lan` into `eth0` if you're not using openwrt and `br0` for mobile hotspot.
-- Take not that the `wlan0` is your `ISP` and the destination is `br-lan/eth0/br0`.
+- Openwrt iptables `NAT`  doesn't work properly on version 1.8.7.
+- Applicable only for openwrt router, linux and rooted phones.
+- Take note that the `wlan0` is your `ISP` and the destination is `eth0`.
 
-# Iptables | Ip6tables for IPv4 and IPv6
+# IPv4 IPTables and IPv6 IP6Tables to extend TTL/HL=1 into TTL/HL=64
 
 ```
 # IPv4 Iptables
@@ -38,10 +36,10 @@ iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 64
 iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 64
 
 # Allow forwarding of packets from wlan0 to br-lan
-iptables -A FORWARD -i wlan0 -o br-lan -j ACCEPT
+iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
 
 # Allow forwarding of packets br-lan to wlan0
-iptables -A FORWARD -i br-lan -o wlan0 -j ACCEPT
+iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 
 # Ensure FORWARD chain policy is set to ACCEPT
 iptables -P FORWARD ACCEPT
@@ -62,10 +60,10 @@ ip6tables -t mangle -A PREROUTING -i wlan0 -j HL --hl-set 64
 ip6tables -t mangle -A POSTROUTING -o wlan0 -j HL --hl-set 64
 
 # Allow forwarding of packets from wlan0 to br-lan
-ip6tables -A FORWARD -i wlan0 -o br-lan -j ACCEPT
+ip6tables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
 
 # Allow forwarding of packets from br-lan to wlan0
-ip6tables -A FORWARD -i br-lan -o wlan0 -j ACCEPT
+ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 
 # Ensure FORWARD chain policy is set to ACCEPT
 ip6tables -P FORWARD ACCEPT
