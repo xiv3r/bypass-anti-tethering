@@ -40,6 +40,11 @@ else
     exit 1
 fi
 
+# Ipv4 and Ipv6 Forwarding
+echo "net.ipv6.conf.all.forwarding=1" >> /etc/sysctl.conf
+echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+sysctl -p
+
 echo "Installing iptables rule in /etc/rc.local..."
 # Header
 echo "#!/bin/bash" > /etc/rc.local
@@ -64,6 +69,11 @@ echo "iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT" >> /etc/rc.local
 # Allow forwarding of packets br-lan to wlan0
 echo "iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT" >> /etc/rc.local
 
+echo "iptables -A INPUT -i wlan0 -j ACCEPT" >> /etc/rc.local
+echo "iptables -A OUTPUT -o wlan0 -j ACCEPT" >> /etc/rc.local
+echo "iptables -A INPUT -i eth0 -j ACCEPT" >> /etc/rc.local
+echo "iptables -A OUTPUT -o eth0 -j ACCEPT" >> /etc/rc.local
+
 # Ensure FORWARD chain policy is set to ACCEPT
 echo "iptables -P FORWARD ACCEPT" >> /etc/rc.local
 
@@ -87,6 +97,11 @@ echo "ip6tables -A FORWARD -i wlan0 -o eth0 -j ACCEPT" >> /etc/rc.local
 
 # Allow forwarding of packets from br-lan to wlan0
 echo "ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT" >> /etc/rc.local
+
+echo "ip6tables -A INPUT -i wlan0 -j ACCEPT" >> /etc/rc.local
+echo "ip6tables -A OUTPUT -o wlan0 -j ACCEPT" >> /etc/rc.local
+echo "ip6tables -A INPUT -i eth0 -j ACCEPT" >> /etc/rc.local
+echo "ip6tables -A OUTPUT -o eth0 -j ACCEPT" >> /etc/rc.local
 
 # Ensure FORWARD chain policy is set to ACCEPT
 echo "ip6tables -P FORWARD ACCEPT" >> /etc/rc.local
