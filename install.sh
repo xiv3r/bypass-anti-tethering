@@ -46,11 +46,12 @@ echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 sysctl -p
 
 echo "Installing iptables rule in /etc/rc.local..."
+sed -i 's/exit 0//' /etc/rc.local
+
 # Header
-echo "#!/bin/bash" > /etc/rc.local
+echo "#!/bin/bash" >>/etc/rc.local
 
 # IPv4 Iptables
-
 # Flush all rules in the filter table
 echo "iptables -F" >> /etc/rc.local
 
