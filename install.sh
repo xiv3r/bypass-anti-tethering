@@ -58,59 +58,46 @@ echo "iptables -F" >> /etc/rc.local
 # Flush all rules in the mangle table
 echo "iptables -t mangle -F" >> /etc/rc.local
 
-#Setting TTL for incoming traffic on wlan0
-echo "iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 64" >> /etc/rc.local
+# Flush all rules int the nat table
+echo "iptables -t nat -F" >> /etc/rc.local
 
-#Setting TTL for outgoing traffic on wlan0
-echo "iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 64" >> /etc/rc.local
+# IPTABLES for IPv4
+# Change incoming TTL=1 to TTL=64 on wlan0
+echo "iptables -t mangle -A PREROUTING -i wlan0 -m ttl --ttl-eq 1 -j TTL --ttl-set 64
 
-# Allow forwarding of packets from wlan0 to br-lan
+# Allow forwarding between wlan0 and eth0
 echo "iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT" >> /etc/rc.local
-
-# Allow forwarding of packets br-lan to wlan0
 echo "iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT" >> /etc/rc.local
 
-echo "iptables -A INPUT -i wlan0 -j ACCEPT" >> /etc/rc.local
-echo "iptables -A OUTPUT -o wlan0 -j ACCEPT" >> /etc/rc.local
-echo "iptables -A INPUT -i eth0 -j ACCEPT" >> /etc/rc.local
-echo "iptables -A OUTPUT -o eth0 -j ACCEPT" >> /etc/rc.local
+# Enable NAT (Masquerade) for eth0
+echo "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE" >> /etc/rc.local
 
-# Ensure FORWARD chain policy is set to ACCEPT
+# Forward Chain
 echo "iptables -P FORWARD ACCEPT" >> /etc/rc.local
 
-#IPv6 Ip6tables
-echo "Installing Ip6tables rule in /etc/rc.local..."
+#__________________________________________
 
-# Flush all rules in the filter table
+# Flush ip6tables filter table
 echo "ip6tables -F" >> /etc/rc.local
 
-# Flush all rules in the mangle table
+# Flush ip6tables mangle table
 echo "ip6tables -t mangle -F" >> /etc/rc.local
 
-# Setting TTL for incoming traffic on wlan0
-echo "ip6tables -t mangle -A PREROUTING -i wlan0 -j HL --hl-set 64" >> /etc/rc.local
+# IP6TABLES for IPv6
+# Change incoming hop limit=1 to hop limit=64 on wlan0
+echo "ip6tables -t mangle -A PREROUTING -i wlan0 -m hl --hl-eq 1 -j HL --hl-set 64" >> /etc/rc.local
 
-# Setting TTL for outgoing traffic on wlan0
-echo "ip6tables -t mangle -A POSTROUTING -o wlan0 -j HL --hl-set 64" >> /etc/rc.local
-
-# Allow forwarding of packets from wlan0 to br-lan
+# Allow forwarding between wlan0 and eth0
 echo "ip6tables -A FORWARD -i wlan0 -o eth0 -j ACCEPT" >> /etc/rc.local
-
-# Allow forwarding of packets from br-lan to wlan0
 echo "ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT" >> /etc/rc.local
 
-echo "ip6tables -A INPUT -i wlan0 -j ACCEPT" >> /etc/rc.local
-echo "ip6tables -A OUTPUT -o wlan0 -j ACCEPT" >> /etc/rc.local
-echo "ip6tables -A INPUT -i eth0 -j ACCEPT" >> /etc/rc.local
-echo "ip6tables -A OUTPUT -o eth0 -j ACCEPT" >> /etc/rc.local
-
-# Ensure FORWARD chain policy is set to ACCEPT
+# Forward Chain 
 echo "ip6tables -P FORWARD ACCEPT" >> /etc/rc.local
 
 echo "exit 0" >> /etc/rc.local
 
 chmod +x /etc/rc.local
 
-echo "Done Installing iptables and ip6tables into /etc/rc.local..."
+echo "Done Installing iptables and ip6tables to /etc/rc.local..."
 
 echo "Required router reboot to apply the settings"
