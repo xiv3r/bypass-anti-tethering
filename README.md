@@ -24,7 +24,8 @@
 ```
 # IPTABLES for IPv4 WISP with Anti-Tethering
 # Change incoming TTL=1 to TTL=64 on wlan0
-iptables -t mangle -A PREROUTING -i wlan0 -m ttl --ttl-eq 1 -j TTL --ttl-set 64
+iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 64
+iptables -t mangle -A POSTROUTING -o wlan0 -j ACCEPT
 
 # Allow forwarding between wlan0 and eth0
 iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
@@ -40,7 +41,8 @@ iptables -P FORWARD ACCEPT
 
 # IP6TABLES for IPv6 WISP with Anti-Tethering
 # Change incoming hop limit=1 to hop limit=64 on wlan0
-ip6tables -t mangle -A PREROUTING -i wlan0 -m hl --hl-eq 1 -j HL --hl-set 64
+ip6tables -t mangle -A PREROUTING -i wlan0 -j HL --hl-set 64
+ip6tables -t mangle -A POSTROUTING -o wlan0 -j ACCEPT
 
 # Allow forwarding between wlan0 and eth0
 ip6tables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
