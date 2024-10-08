@@ -63,7 +63,7 @@ echo "iptables -t nat -F" >> /etc/rc.local
 
 # IPTABLES for IPv4
 # Change incoming TTL=1 to TTL=64 on wlan0
-echo "iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 64
+echo "iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 64" >>/etc/rc.local
 echo "iptables -t mangle -A POSTROUTING -o wlan0 -j ACCEPT" >> /etc/rc.local
 
 # Allow forwarding between wlan0 and eth0
