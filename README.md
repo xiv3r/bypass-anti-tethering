@@ -41,6 +41,12 @@ iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
 # Allow forwarding of packets br-lan to wlan0
 iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 
+# Allow Loop Back
+iptables -A INPUT -i wlan0 -j ACCEPT
+iptables -A OUTPUT -o wlan0 -j ACCEPT
+iptables -A INPUT -i eth0 -j ACCEPT
+iptables -A OUTPUT -o eth0 -j ACCEPT
+
 # Ensure FORWARD chain policy is set to ACCEPT
 iptables -P FORWARD ACCEPT
 
@@ -64,6 +70,12 @@ ip6tables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
 
 # Allow forwarding of packets from br-lan to wlan0
 ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
+
+# Allow Loop Back
+ip6tables -A INPUT -i wlan0 -j ACCEPT
+ip6tables -A OUTPUT -o wlan0 -j ACCEPT
+ip6tables -A INPUT -i eth0 -j ACCEPT
+ip6tables -A OUTPUT -o eth0 -j ACCEPT
 
 # Ensure FORWARD chain policy is set to ACCEPT
 ip6tables -P FORWARD ACCEPT
