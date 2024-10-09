@@ -30,7 +30,7 @@ Openwrt/Linux WiFi Repeater/Extender mode
     opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
 
     
-### Note!
+## Note!
 - Connect your Router/PC to Internet for Installation.
 - Configure your router or pc to Extender/Repeater Mode and done!.
 - Openwrt iptables `NAT`  doesn't work properly on version 1.8.7.
@@ -67,7 +67,7 @@ ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 
 ```
 
-## How to check?
+# How to check?
 • IPv4 iptables
     
     iptables -vnL --line-numbers
@@ -89,7 +89,7 @@ ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 - All Arch based Distro
 - Almost all OS supported by Iptables
 
-## How to clear Iptables existing rules?
+# How to clear Iptables existing rules?
 • IPv4 iptables
     
     iptables -F
