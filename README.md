@@ -2,7 +2,16 @@
       
 ### [Bypass WiFi Anti-Tethering (TTL /HL=1)](https://github.com/xiv3r/anti-tethering-bypasser)
    
-10.0.0.1 ttl=1 => WiFi Repeater/Extender => 10.0.0.1 ttl=64
+10.0.0.1 ttl=1
+
+👇
+
+Openwrt/Linux WiFi Repeater/Extender mode
+
+👇
+
+10.0.0.1 ttl=64
+
 </summary> </h1>
 
 # Auto Install for Linux
