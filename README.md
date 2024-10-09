@@ -21,14 +21,16 @@ Openwrt/Linux WiFi Repeater/Extender mode
 # Auto Install for OpenWRT
 
     opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
-    
 
+    
 ### Note!
+- Connect your Router/PC to Internet for Installation.
+- Configure your router or pc to Extender/Repeater Mode and done!.
 - Openwrt iptables `NAT`  doesn't work properly on version 1.8.7.
 - Applicable only for openwrt router, linux and rooted phones.
 - Take note that the `wlan0` is your `ISP` and the destination is `eth0`.
 
-# IPTables and IP6Tables fo Anti-Tethering WISP
+# IPTables and IP6Tables to Bypass Anti-Tethering Restriction
 
 ```
 # IPTABLES for IPv4 WISP with Anti-Tethering
@@ -66,7 +68,19 @@ ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 • IPv6 ip6tables
    
     ip6tables -vnL ---line-numbers
+
+# Features
+- Bypass ISP Hotspot sharing restriction
+- Support 65 Hops Nodes
+- Can Shared or tethered across multiple devices
+- Free Internet
     
+# Tested on
+- Termux Custom Bridge interfaces
+- All OpenWRT/XWRT/IMWRT
+- All Debian based Distros
+- All Arch based Distro
+- Almost all OS supported by Iptables
 
 ## How to clear Iptables existing rules?
 • IPv4 iptables
