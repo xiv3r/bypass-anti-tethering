@@ -23,33 +23,30 @@
 
 ```
 # IPTABLES for IPv4 WISP with Anti-Tethering
-# Change incoming TTL=1 to TTL=64 on wlan0
-iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 64
-iptables -t mangle -A POSTROUTING -o wlan0 -j ACCEPT
+
+# Change incoming TTL=1 to TTL=65 on wlan0
+iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 65
+iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 64
+
+# Enable NAT (Masquerade) for eth0
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 # Allow forwarding between wlan0 and eth0
 iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
 iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 
-# Enable NAT (Masquerade) for eth0
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-
-# Forward Chain
-iptables -P FORWARD ACCEPT
-
-#__________________________________________
+#__________________________________________________________________
 
 # IP6TABLES for IPv6 WISP with Anti-Tethering
-# Change incoming hop limit=1 to hop limit=64 on wlan0
-ip6tables -t mangle -A PREROUTING -i wlan0 -j HL --hl-set 64
-ip6tables -t mangle -A POSTROUTING -o wlan0 -j ACCEPT
+
+# Change incoming hop limit=1 to hop limit=65 on wlan0
+ip6tables -t mangle -A PREROUTING -i wlan0 -j HL --hl-set 65
+ip6tables -t mangle -A POSTROUTING -o wlan0 -j HL --hl-set 64
 
 # Allow forwarding between wlan0 and eth0
 ip6tables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
 ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 
-# Forward Chain 
-ip6tables -P FORWARD ACCEPT
 ```
 
 ## How to check?
