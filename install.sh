@@ -52,6 +52,7 @@ sed -i 's/exit 0//' /etc/rc.local
 echo "#!/bin/bash" >>/etc/rc.local
 
 # IPv4 Iptables
+
 # Flush all rules in the filter table
 echo "iptables -F" >> /etc/rc.local
 
@@ -63,18 +64,15 @@ echo "iptables -t nat -F" >> /etc/rc.local
 
 # IPTABLES for IPv4
 # Change incoming TTL=1 to TTL=64 on wlan0
-echo "iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 64" >>/etc/rc.local
-echo "iptables -t mangle -A POSTROUTING -o wlan0 -j ACCEPT" >> /etc/rc.local
-
-# Allow forwarding between wlan0 and eth0
-echo "iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT" >> /etc/rc.local
-echo "iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT" >> /etc/rc.local
+echo "iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 65" >>/etc/rc.local
+echo "iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 64" >> /etc/rc.local
 
 # Enable NAT (Masquerade) for eth0
 echo "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE" >> /etc/rc.local
 
-# Forward Chain
-echo "iptables -P FORWARD ACCEPT" >> /etc/rc.local
+# Allow forwarding between wlan0 and eth0
+echo "iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT" >> /etc/rc.local
+echo "iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT" >> /etc/rc.local
 
 #__________________________________________
 
@@ -85,16 +83,14 @@ echo "ip6tables -F" >> /etc/rc.local
 echo "ip6tables -t mangle -F" >> /etc/rc.local
 
 # IP6TABLES for IPv6
+
 # Change incoming hop limit=1 to hop limit=64 on wlan0
-echo "ip6tables -t mangle -A PREROUTING -i wlan0 -j HL --hl-set 64" >> /etc/rc.local
-echo "ip6tables -t mangle -A POSTROUTING -o wlan0 -j ACCEPT" >> /etc/rc.local
+echo "ip6tables -t mangle -A PREROUTING -i wlan0 -j HL --hl-set 65" >> /etc/rc.local
+echo "ip6tables -t mangle -A POSTROUTING -o wlan0 -j HL --hl-set 64" >> /etc/rc.local
 
 # Allow forwarding between wlan0 and eth0
 echo "ip6tables -A FORWARD -i wlan0 -o eth0 -j ACCEPT" >> /etc/rc.local
 echo "ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT" >> /etc/rc.local
-
-# Forward Chain 
-echo "ip6tables -P FORWARD ACCEPT" >> /etc/rc.local
 
 echo "exit 0" >> /etc/rc.local
 
@@ -103,3 +99,7 @@ chmod +x /etc/rc.local
 echo "Done Installing iptables and ip6tables to /etc/rc.local..."
 
 echo "Required router reboot to apply the settings"
+
+reboot
+
+echo "Rebooting...!"
