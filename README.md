@@ -1,8 +1,16 @@
- <h1 align="center"> <summary>
-      
-### [Bypass WiFi Anti-Tethering (TTL /HL=1)](https://github.com/xiv3r/anti-tethering-bypasser)
-   
-10.0.0.1 ttl=1
+ <h1 align="center"><summary>
+  
+# [Bypass WiFi Anti-Tethering (TTL /HL=1)](https://github.com/xiv3r/anti-tethering-bypasser)
+
+</summary></h1>
+
+<h4 align="center">
+ 
+   Wireless Sharing Protection (anti-tethering) is a mechanism employed by wisp carriers to restrict tethering or hotspot functionality on wifi by modifying the ttl value to 1 hops. To circumvent these restrictions, iptables can be utilized to modify network traffic characteristics, allowing users to bypass wireless sharing detection effectively.
+
+<h1 align="center">
+ 
+ 10.0.0.1 ttl=1
 
 👇
 
@@ -11,8 +19,7 @@ Openwrt/Linux WiFi Repeater/Extender mode
 👇
 
 10.0.0.1 ttl=64
-
-</summary> </h1>
+ </h1>
 
 # Auto Install for Linux
    
