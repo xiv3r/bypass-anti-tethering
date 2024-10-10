@@ -40,7 +40,6 @@ Openwrt/Linux WiFi Repeater/Extender mode
 - Applicable only for openwrt router, linux and rooted phones.
 - Take note that the `wlan0` is your `ISP` and the destination is `eth0`.
 - Check your interfaces before proceeding to auto install otherwise if doesn't match you need to manually edit wlan0 and eth0 to your current interface where the traffic goes on.
-- 
 
 # IPTables and IP6Tables to Bypass Anti-Tethering Restriction
 
@@ -117,11 +116,11 @@ To achieve the setup where incoming packets with TTL=1 on the wlan0 interface ar
 - Take note that the `wlan0` is your `ISP` and the destination is `eth0/LAN`.
 - Check your interfaces before proceeding to auto install otherwise if doesn't match you need to manually edit wlan0 and eth0 to your current interface where the traffic goes on.
 
-1. Auto install for Linux
+# Auto install for Linux
 
        sudo apt update ; sudo apt install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sudo sh -x
 
-2. Auto install for Openwrt
+# Auto install for Openwrt
 
        opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sh -x
 
@@ -142,7 +141,7 @@ nft add chain inet custom_table forward { type filter hook forward priority 0 \;
 nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept
 nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept
 ```
-Explanation:
+## Explanation:
 Prerouting chain: Incoming packets on wlan0 with TTL=1 are changed to TTL=64 before forwarding.
 Postrouting chain: Outgoing packets through wlan0 are set to TTL=64.
 Forward chain: Allows forwarding between wlan0 and eth0 in both directions.
