@@ -39,6 +39,11 @@ else
     exit 1
 fi
 
+# Ipv4 and Ipv6 Forwarding
+echo "net.ipv6.conf.all.forwarding=1" >> /etc/sysctl.conf
+echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+sysctl -p
+
 echo "adding nftables to /etc/nftables.conf"
 
 echo "#!/bin/sh" > /etc/nftables.conf
@@ -61,5 +66,3 @@ echo "nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept" >> /
 chmod +x /etc/nftables.conf
 echo "Done installing config to /etc/nftables.conf"
 echo "Required router reboot to apply the settings"
-echo "Rebooting...!"
-reboot
