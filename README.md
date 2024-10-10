@@ -21,6 +21,9 @@ Openwrt/Linux WiFi Repeater/Extender mode
 10.0.0.1 ttl=64
  </h1>
 
+ <h1 align="center"> Using IPTABLES & IP6TABLES </h1>
+ 
+
 # Auto Install for Linux
    
     sudo apt update ; sudo apt install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo sh
@@ -100,4 +103,47 @@ ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
     ip6tables -F
     ip6tables -t mangle -F
 
+<h1 align="center"> Using NFTABLES </h1>
+
+To achieve the setup where incoming packets with TTL=1 on the wlan0 interface are modified to have TTL=64 and forwarded to the eth0 interface, and the outgoing packets are modified with TTL=64 when sent back from eth0 to wlan0, you can configure nftables as follows:
+
+1. Install nftables (if not installed)
+
+       opkg update ; opkg install nftables kmod-nft-nat kmod-nft-core kmod-nft-nat kmod-nfnetlink
+
+3. Configure the nftables Rules
+Here is a basic nftables configuration to change TTL and allow forwarding between wlan0 and eth
+
+```bash
+nft add table inet custom_table
+
+# Prerouting: Change TTL on incoming packets from wlan0
+nft add chain inet custom_table prerouting { type filter hook prerouting priority 0 \; }
+nft add rule inet custom_table prerouting iif "wlan0" ip ttl set 64
+
+# Postrouting: Enable masquerading on eth0 and set outgoing TTL for wlan0
+nft add chain inet custom_table postrouting { type nat hook postrouting priority 100 \; }
+nft add rule inet custom_table postrouting oif "eth0" masquerade
+nft add rule inet custom_table postrouting oif "wlan0" ip ttl set 64
+
+# Forwarding: Allow traffic between wlan0 and eth0 in both directions
+nft add chain inet custom_table forward { type filter hook forward priority 0 \; }
+nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept
+nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept
+```
+
+4. Create the nftables rules file
+Create or edit the nftables configuration file
+
+       vi /etc/nftables.conf
+
+6. Ensure nftables Service is Enabled
+To ensure nftables starts on boot and the rules persist across reboots, enable and start the nftables service:
+
+       chmod +x /etc/nftables.conf
+   
+Explanation:
+Prerouting chain: Incoming packets on wlan0 with TTL=1 are changed to TTL=64 before forwarding.
+Postrouting chain: Outgoing packets through wlan0 are set to TTL=64.
+Forward chain: Allows forwarding between wlan0 and eth0 in both directions.
     
