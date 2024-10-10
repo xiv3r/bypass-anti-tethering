@@ -45,6 +45,9 @@ Openwrt/Linux WiFi Repeater/Extender mode
 
 ```
 # IPTABLES for IPv4 WISP with Anti-Tethering
+iptables -F
+iptables -t nat -F
+iptables -t mangle -F
 
 # Change incoming TTL=1 to TTL=65 on wlan0
 iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 65
@@ -60,6 +63,8 @@ iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 #__________________________________________________________________
 
 # IP6TABLES for IPv6 WISP with Anti-Tethering
+ip6tables -F
+ip6tables -t mangle -F
 
 # Change incoming hop limit=1 to hop limit=65 on wlan0
 ip6tables -t mangle -A PREROUTING -i wlan0 -j HL --hl-set 65
@@ -125,8 +130,11 @@ To achieve the setup where incoming packets with TTL=1 on the wlan0 interface ar
        opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sh -x
 
 ```bash
-nft add table inet custom_table
 
+# NFTABLE for IPv4 (recommended)
+# ______________________________
+
+nft add table inet custom_table
 # Prerouting: Change TTL on incoming packets from wlan0
 nft add chain inet custom_table prerouting { type filter hook prerouting priority 0 \; }
 nft add rule inet custom_table prerouting iif "wlan0" ip ttl set 64
@@ -140,6 +148,26 @@ nft add rule inet custom_table postrouting oif "wlan0" ip ttl set 64
 nft add chain inet custom_table forward { type filter hook forward priority 0 \; }
 nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept
 nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept
+
+# NFTABLE for IPv6 (optional)
+# ___________________________
+
+nft add table inet custom_table
+# Prerouting: Change HL=1 to HL=64 on incoming packets from wlan0
+nft add chain inet custom_table prerouting { type filter hook prerouting priority 0 \; }
+nft add rule inet custom_table prerouting iif "wlan0" ip6 hl set 64
+
+# Postrouting: Enable masquerading on eth0 and set outgoing HL for wlan0
+nft add chain inet custom_table postrouting { type nat hook postrouting priority 100 \; }
+nft add rule inet custom_table postrouting oif "eth0" masquerade
+nft add rule inet custom_table postrouting oif "wlan0" ip6 hl set 64
+
+# Forwarding: Allow traffic between wlan0 and eth0 in both directions
+nft add chain inet custom_table forward { type filter hook forward priority 0 \; }
+nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept
+nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept
+
+
 ```
 ## Explanation:
 Prerouting chain: Incoming packets on wlan0 with TTL=1 are changed to TTL=64 before forwarding.
