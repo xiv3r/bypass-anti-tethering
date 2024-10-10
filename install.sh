@@ -99,7 +99,3 @@ chmod +x /etc/rc.local
 echo "Done Installing iptables and ip6tables to /etc/rc.local..."
 
 echo "Required router reboot to apply the settings"
-
-reboot
-
-echo "Rebooting...!"
