@@ -1,7 +1,43 @@
 #!/bin/sh
 
-opkg install nftables kmod-nft-nat kmod-nft-core kmod-nft-nat kmod-nfnetlink
-apt install nftable -y
+# List of packages to install on OpenWRT
+OPENWRT_PACKAGES="nftables kmod-nft-nat kmod-nft-core kmod-nft-nat kmod-nfnetlink"
+# List of packages to install on generic Linux (Debian-based)
+GENERIC_LINUX_PACKAGES="nftables"
+
+# Function to detect OpenWRT
+is_openwrt() {
+    [ -f /etc/openwrt_release ]
+}
+
+# Function to detect Debian-based Linux
+is_debian() {
+    [ -f /etc/debian_version ]
+}
+
+# Function to install packages on OpenWRT
+install_openwrt_packages() {
+    echo "Installing Dependencies on OpenWRT: $OPENWRT_PACKAGES"
+    opkg install $OPENWRT_PACKAGES
+}
+
+# Function to install packages on Debian-based Linux
+install_generic_linux_packages() {
+    echo "Installing Dependencies on Linux: $GENERIC_LINUX_PACKAGES"
+    sudo apt install -y $GENERIC_LINUX_PACKAGES
+}
+
+# Main logic
+if is_openwrt; then
+    echo "OpenWRT detected."
+    install_openwrt_packages
+elif is_debian; then
+    echo "Debian-based Linux detected."
+    install_generic_linux_packages
+else
+    echo "Unsupported OS. This script is intended for OpenWRT or Debian-based Linux."
+    exit 1
+fi
 
 echo "adding nftables to /etc/nftables.conf"
 
