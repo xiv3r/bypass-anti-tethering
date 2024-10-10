@@ -170,7 +170,10 @@ nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept
 nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept
 ```
 ## Explanation:
+
 Prerouting chain: Incoming packets on wlan0 with TTL=1 are changed to TTL=64 before forwarding.
+
 Postrouting chain: Outgoing packets through wlan0 are set to TTL=64.
+
 Forward chain: Allows forwarding between wlan0 and eth0 in both directions.
     
