@@ -44,7 +44,9 @@ Openwrt/Linux WiFi Repeater/Extender mode
 # IPTables and IP6Tables to Bypass Anti-Tethering Restriction
 
 ```
-# IPTABLES for IPv4 WISP with Anti-Tethering
+# IPTABLES for IPv4 (recommended)
+# _______________________________
+
 iptables -F
 iptables -t nat -F
 iptables -t mangle -F
@@ -60,9 +62,9 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
 iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 
-#__________________________________________________________________
+# IP6TABLES for IPv6 (optional)
+# _____________________________
 
-# IP6TABLES for IPv6 WISP with Anti-Tethering
 ip6tables -F
 ip6tables -t mangle -F
 
