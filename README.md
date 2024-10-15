@@ -176,4 +176,9 @@ Prerouting chain: Incoming packets on wlan0 with TTL=1 are changed to TTL=64 bef
 Postrouting chain: Outgoing packets through wlan0 are set to TTL=64.
 
 Forward chain: Allows forwarding between wlan0 and eth0 in both directions.
-    
+
+# Windows 
+
+    netsh int ipv4 set glob defaultcurhoplimit=65
+    netsh int ipv6 set glob defaultcurhoplimit=65
+
