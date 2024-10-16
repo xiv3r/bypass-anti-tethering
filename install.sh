@@ -95,4 +95,5 @@ sh /etc/rc.local
 echo "Done Installing iptables and ip6tables to /etc/rc.local..."
 
 echo "Anti-Tethering bypass is running now on wlan0 to eth0 with ttl=64"
-iptables -Lvn && ip6tables -Lvn
+ iptables -vnL --line-numbers
+ ip6tables -vnL --line-numbers
