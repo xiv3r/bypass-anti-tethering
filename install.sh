@@ -63,9 +63,19 @@ echo "iptables -t mangle -F" >> /etc/rc.local
 # Flush all rules int the nat table
 echo "iptables -t nat -F" >> /etc/rc.local
 
+# Flush ip6tables filter table
+echo "ip6tables -F" >> /etc/rc.local
+
+# Flush ip6tables mangle table
+echo "ip6tables -t mangle -F" >> /etc/rc.local
+
 # Change incoming TTL=1 to TTL=64 on wlan0
 echo "iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 65" >>/etc/rc.local
 echo "iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 64" >> /etc/rc.local
+
+# Change incoming hop limit=1 to hop limit=64 on wlan0
+echo "ip6tables -t mangle -A PREROUTING -i wlan0 -j HL --hl-set 65" >> /etc/rc.local
+echo "ip6tables -t mangle -A POSTROUTING -o wlan0 -j HL --hl-set 64" >> /etc/rc.local
 
 # Enable NAT (Masquerade) for eth0
 echo "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE" >> /etc/rc.local
@@ -73,23 +83,6 @@ echo "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE" >> /etc/rc.local
 # Allow forwarding between wlan0 and eth0
 echo "iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT" >> /etc/rc.local
 echo "iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT" >> /etc/rc.local
-
-# IP6TABLES for IPv6 (optional)
-# _____________________________
-
-# Flush ip6tables filter table
-echo "ip6tables -F" >> /etc/rc.local
-
-# Flush ip6tables mangle table
-echo "ip6tables -t mangle -F" >> /etc/rc.local
-
-# Change incoming hop limit=1 to hop limit=64 on wlan0
-echo "ip6tables -t mangle -A PREROUTING -i wlan0 -j HL --hl-set 65" >> /etc/rc.local
-echo "ip6tables -t mangle -A POSTROUTING -o wlan0 -j HL --hl-set 64" >> /etc/rc.local
-
-# Allow forwarding between wlan0 and eth0
-echo "ip6tables -A FORWARD -i wlan0 -o eth0 -j ACCEPT" >> /etc/rc.local
-echo "ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT" >> /etc/rc.local
 
 echo "exit 0" >> /etc/rc.local
 
