@@ -60,6 +60,9 @@ echo "iptables -F" >> /etc/rc.local
 # Flush all rules in the mangle table
 echo "iptables -t mangle -F" >> /etc/rc.local
 
+# Flush all rules in the nat table 
+echo " iptables -t nat -F" >> /etc/rc.local
+
 # Flush all rules int the nat table
 echo "iptables -t nat -F" >> /etc/rc.local
 
