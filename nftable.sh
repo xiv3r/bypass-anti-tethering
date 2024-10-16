@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # List of packages to install on OpenWRT
-OPENWRT_PACKAGES="nftables kmod-nft-nat kmod-nft-core kmod-nft-nat kmod-nfnetlink"
+OPENWRT_PACKAGES="nftables kmod-nft-nat kmod-nft-core kmod-nfnetlink"
 # List of packages to install on generic Linux (Debian-based)
 GENERIC_LINUX_PACKAGES="nftables"
 
