@@ -151,6 +151,10 @@ nft add chain inet custom_table forward { type filter hook forward priority 0 \;
 nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept
 nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept
 ```
+# Checking existing ruleset
+
+    nftables list ruleset
+
 ## Explanation:
 
 Prerouting chain: Incoming packets on wlan0 with TTL=1 are changed to TTL=64 before forwarding.
