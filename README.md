@@ -150,24 +150,6 @@ nft add rule inet custom_table postrouting oif "wlan0" ip ttl set 64
 nft add chain inet custom_table forward { type filter hook forward priority 0 \; }
 nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept
 nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept
-
-# NFTABLE for IPv6 (optional)
-# ___________________________
-
-nft add table inet custom_table
-# Prerouting: Change HL=1 to HL=64 on incoming packets from wlan0
-nft add chain inet custom_table prerouting { type filter hook prerouting priority 0 \; }
-nft add rule inet custom_table prerouting iif "wlan0" ip6 hl set 65
-
-# Postrouting: Enable masquerading on eth0 and set outgoing HL for wlan0
-nft add chain inet custom_table postrouting { type nat hook postrouting priority 100 \; }
-nft add rule inet custom_table postrouting oif "eth0" masquerade
-nft add rule inet custom_table postrouting oif "wlan0" ip6 hl set 64
-
-# Forwarding: Allow traffic between wlan0 and eth0 in both directions
-nft add chain inet custom_table forward { type filter hook forward priority 0 \; }
-nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept
-nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept
 ```
 ## Explanation:
 
