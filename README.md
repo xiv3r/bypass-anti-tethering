@@ -25,13 +25,13 @@ Openwrt/Linux WiFi Repeater/Extender mode
  
 
 # Auto Install for Linux
-   
-    sudo apt update ; sudo apt install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo sh
-
+```sh
+ sudo apt update ; sudo apt install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo sh
+```
 # Auto Install for OpenWRT
-
-    opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
-
+```sh
+opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
+```
     
 ## Note!
 - Connect your Router/PC to Internet for Installation.
@@ -41,9 +41,8 @@ Openwrt/Linux WiFi Repeater/Extender mode
 - Take note that the `wlan0` is your `ISP` and the destination is `eth0`.
 - Check your interfaces before proceeding to auto install otherwise if doesn't match you need to manually edit wlan0 and eth0 to your current interface where the traffic goes on.
 
-# IPTables and IP6Tables to Bypass Anti-Tethering Restriction
-
-```bash
+# IPTables and IP6Tables to Bypass Tethering Restriction
+```sh
 # IPTABLES for IPv4 (recommended)
 # _______________________________
 
@@ -80,13 +79,13 @@ ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 
 # How to check?
 • IPv4 iptables
-    
-    iptables -vnL --line-numbers
-
+```sh
+iptables -vnL --line-numbers
+```
 • IPv6 ip6tables
-   
-    ip6tables -vnL ---line-numbers
-
+```sh
+ip6tables -vnL ---line-numbers
+```
 # Features
 - Bypass ISP Hotspot sharing restriction
 - Support 65 Hops Nodes
@@ -102,14 +101,15 @@ ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 
 # How to clear Iptables existing rules?
 • IPv4 iptables
-    
-    iptables -F
-    iptables -t mangle -F
-    
+```sh
+iptables -F
+iptables -t mangle -F
+ ```   
 • IPv6 ip6tables
-   
-    ip6tables -F
-    ip6tables -t mangle -F
+```sh
+ip6tables -F
+ip6tables -t mangle -F
+```
 
 <h1 align="center"> Using NFTABLES </h1>
 
@@ -124,14 +124,14 @@ To achieve the setup where incoming packets with TTL=1 on the wlan0 interface ar
 - Check your interfaces before proceeding to auto install otherwise if doesn't match you need to manually edit wlan0 and eth0 to your current interface where the traffic goes on.
 
 # Auto install for Linux
-
-       sudo apt update ; sudo apt install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sudo sh
-
+```sh
+sudo apt update ; sudo apt install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sudo sh
+```
 # Auto install for Openwrt
-
-       opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sh
-
-```bash
+```sh
+opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sh
+```
+```sh
 
 # NFTABLE for IPv4 (recommended)
 # ______________________________
@@ -152,9 +152,9 @@ nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept
 nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept
 ```
 # Checking existing ruleset
-
-    nftables list ruleset
-
+```sh
+nftables list ruleset
+```
 ## Explanation:
 
 Prerouting chain: Incoming packets on wlan0 with TTL=1 are changed to TTL=64 before forwarding.
@@ -166,6 +166,7 @@ Forward chain: Allows forwarding between wlan0 and eth0 in both directions.
 <h1 align="center">Windows
 </h1>
 
-    netsh int ipv4 set glob defaultcurhoplimit=65
-    netsh int ipv6 set glob defaultcurhoplimit=65
-
+```sh
+netsh int ipv4 set glob defaultcurhoplimit=65
+netsh int ipv6 set glob defaultcurhoplimit=65
+```
