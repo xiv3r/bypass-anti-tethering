@@ -1,6 +1,6 @@
  <h1 align="center"><summary>
   
-# [Bypass WiFi Anti-Tethering (TTL /HL=1)](https://github.com/xiv3r/anti-tethering-bypasser)
+### [Bypass WiFi Anti-Tethering (TTL /HL=1)](https://github.com/xiv3r/anti-tethering-bypasser)
 
 </summary></h1>
 
@@ -163,7 +163,8 @@ Postrouting chain: Outgoing packets through wlan0 are set to TTL=64.
 
 Forward chain: Allows forwarding between wlan0 and eth0 in both directions.
 
-# Windows 
+<h1 align="center">Windows
+</h1>
 
     netsh int ipv4 set glob defaultcurhoplimit=65
     netsh int ipv6 set glob defaultcurhoplimit=65
