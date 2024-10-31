@@ -28,9 +28,14 @@ Openwrt/Linux WiFi Repeater/Extender mode
 ```sh
  sudo apt update ; sudo apt install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo sh
 ```
-# Auto Install for OpenWRT
+# Auto Install for OpenWRT using Nftables.conf (ipv4 only)
 ```sh
 opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
+```
+
+# Auto install for OpenWRT using Nftables.nft (recommended)
+```sh
+cd /etc/nftables.d/ && wget https://raw.githubusercontent.com/xiv3r/anti-tethering-bypasser/refs/heads/main/12-mangle-ttl-65.nft && fw4 check && /etc/init.d/firewall restart
 ```
     
 ## Note!
