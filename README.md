@@ -151,9 +151,36 @@ nft add chain inet custom_table forward { type filter hook forward priority 0 \;
 nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept
 nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept
 ```
-# Checking existing ruleset
+# Check existing ruleset
 ```sh
 nftables list ruleset
+```
+
+
+# Using nftables.nft (recommended)
+`etc/nftables.d/`
+```sh
+chain mangle_prerouting_ttl65 {
+  type filter hook prerouting priority 300; policy accept;
+  iifname "wlan0" counter ip ttl set 65
+  iifname "wlan0" counter ip6 hoplimit set 65
+}
+
+chain mangle_postrouting_ttl65 {
+  type filter hook postrouting priority 300; policy accept;
+  oifname "wlan0" counter ip ttl set 65
+  oifname "wlan0" counter ip6 hoplimit set 65
+}
+```
+- ## Install Nftables.nft
+```sh
+cd /etc/nftables.d/ && wget https://raw.githubusercontent.com/xiv3r/anti-tethering-bypasser/refs/heads/main/12-mangle-ttl-65.nft && fw4 check && /etc/init.d/firewall restart
+```
+<img src="https://github.com/xiv3r/anti-tethering-bypasser/blob/main/Nftables.nft.png">
+
+## Check nftables existing ruleset
+```sh
+fw4 check && nft list ruleset
 ```
 ## Explanation:
 
