@@ -23,23 +23,12 @@ Openwrt/Linux WiFi Repeater/Extender mode
 
  <h1 align="center"> Using IPTABLES & IP6TABLES </h1>
  
-# Install Openwrt ttl64.nft (stable & recommended)
-> `fw4 check passed`
 
-> built-in from fw4 firewall
-
-> support `ipv4` ISP
-
-> support `ipv6` ISP 
-```sh
-cd /etc/nftables.d/ && wget https://raw.githubusercontent.com/xiv3r/anti-tethering-bypasser/refs/heads/main/ttl64.nft && fw4 check && /etc/init.d/firewall restart
-```
-
-# Auto Install for Linux
+# Auto Install IPTABLES for Linux distro
 ```sh
  sudo apt update ; sudo apt install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo sh
 ```
-# Auto Install for OpenWRT
+# Auto Install IPTABLES/IP6TABLES for OpenWRT router
 ```sh
 opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
 ```
@@ -125,6 +114,18 @@ To achieve the setup where incoming packets with TTL=1 on the wlan0 interface ar
 > Take note that the `wlan0` is your `ISP` and the destination is `eth0/LAN`.
 > Check your interfaces before proceeding to auto install otherwise if doesn't match you need to manually edit wlan0 and eth0 to your current interface where the traffic goes on.
 
+ 
+# Auto Install Nftables ttl64.nft for Openwrt (stable & recommended)
+> `fw4 check passed`
+
+> built-in from fw4 firewall
+
+> support `ipv4` ISP
+
+> support `ipv6` ISP 
+```sh
+cd /etc/nftables.d/ && wget https://raw.githubusercontent.com/xiv3r/anti-tethering-bypasser/refs/heads/main/ttl64.nft && fw4 check && /etc/init.d/firewall restart
+```
 
 # Auto install for Linux
 ```sh
