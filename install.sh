@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # List of packages to install on OpenWRT
-OPENWRT_PACKAGES="iptables-mod-ipopt kmod-ipt-ipopt kmod-ipt-nat iptables-zz-legacy iptables ip6tables ip6tables-zz-legacy ip6tables-mod-nat kmod-ipt-nat6 kmod-ip6tables"
+OPENWRT_PACKAGES="iptables-mod-ipopt nftables iptables-zz-legacy iptables ip6tables ip6tables-zz-legacy"
 
 # List of packages to install on generic Linux (Debian-based)
-GENERIC_LINUX_PACKAGES="iptables"
+GENERIC_LINUX_PACKAGES="iptables nftables"
 
 # Function to detect OpenWRT
 is_openwrt() {
