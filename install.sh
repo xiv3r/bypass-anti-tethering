@@ -41,59 +41,36 @@ else
 fi
 
 # Ipv4 and Ipv6 Forwarding
-echo "net.ipv6.conf.all.forwarding=1" >> /etc/sysctl.conf
-echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+echo "
+net.ipv6.conf.all.forwarding=1
+net.ipv4.ip_forward=1
+" >> /etc/sysctl.conf
 sysctl -p
 
 echo "Installing iptables rule in /etc/rc.local..."
 sed -i 's/exit 0//' /etc/rc.local
 
-# Header
-echo "#!/bin/bash" >>/etc/rc.local
-
-# IPTABLES for IPv4 (recommended)
-# _______________________________
-
-# Flush all rules in the filter table
-echo "iptables -F" >> /etc/rc.local
-
-# Flush all rules in the mangle table
-echo "iptables -t mangle -F" >> /etc/rc.local
-
-# Flush all rules in the nat table 
-echo " iptables -t nat -F" >> /etc/rc.local
-
-# Flush all rules int the nat table
-echo "iptables -t nat -F" >> /etc/rc.local
-
-# Flush ip6tables filter table
-echo "ip6tables -F" >> /etc/rc.local
-
-# Flush ip6tables mangle table
-echo "ip6tables -t mangle -F" >> /etc/rc.local
+echo "
+#!/bin/sh
 
 # Change incoming TTL=1 to TTL=64 on wlan0
-echo "iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 65" >>/etc/rc.local
-echo "iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 64" >> /etc/rc.local
+iptables -t mangle -A PREROUTING -j TTL --ttl-set 64
 
 # Change incoming hop limit=1 to hop limit=64 on wlan0
-echo "ip6tables -t mangle -A PREROUTING -i wlan0 -j HL --hl-set 65" >> /etc/rc.local
-echo "ip6tables -t mangle -A POSTROUTING -o wlan0 -j HL --hl-set 64" >> /etc/rc.local
+ip6tables -t mangle -A PREROUTING -j HL --hl-set 64
 
 # Enable NAT (Masquerade) for eth0
-echo "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE" >> /etc/rc.local
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 # Allow forwarding between wlan0 and eth0
-echo "iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT" >> /etc/rc.local
-echo "iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT" >> /etc/rc.local
-
-echo "exit 0" >> /etc/rc.local
+iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
+exit 0
+" >> /etc/rc.local
 
 chmod +x /etc/rc.local
 sh /etc/rc.local
 
-echo "Done Installing iptables and ip6tables to /etc/rc.local..."
-
-echo "Anti-Tethering bypass is running now on wlan0 to eth0 with ttl=64"
- iptables -vnL --line-numbers
- ip6tables -vnL --line-numbers
+echo 'Done'
+iptables -vnL --line-numbers
+ip6tables -vnL --line-numbers
