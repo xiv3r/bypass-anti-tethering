@@ -22,6 +22,15 @@ Openwrt/Linux WiFi Repeater/Extender mode
  </h1>
 
  <h1 align="center"> Using IPTABLES & IP6TABLES </h1>
+ 
+# Install Openwrt ttl64.nft (stable & recommended)
+> `fw4 check passed`
+> built-in from fw4 firewall
+> support `ipv4` ISP
+> support `ipv6` ISP 
+```sh
+cd /etc/nftables.d/ && wget https://raw.githubusercontent.com/xiv3r/anti-tethering-bypasser/refs/heads/main/ttl64.nft && fw4 check && /etc/init.d/firewall restart
+```
 
 # Auto Install for Linux
 ```sh
@@ -156,11 +165,7 @@ chain mangle_prerouting_ttl64 {
    counter ip6 hoplimit set 64
 }
 ```
-# Install Nftables.nft (stable & recommended)
-> fw4 check passed
-```sh
-cd /etc/nftables.d/ && wget https://raw.githubusercontent.com/xiv3r/anti-tethering-bypasser/refs/heads/main/12-mangle-ttl-65.nft && fw4 check && /etc/init.d/firewall restart
-```
+
 <img src="https://github.com/xiv3r/anti-tethering-bypasser/blob/main/Nftables.nft.png">
 
 # Check nftables existing ruleset
