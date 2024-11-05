@@ -32,15 +32,16 @@ Openwrt/Linux WiFi Repeater/Extender mode
 opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
 ```
     
-## Note!
-- Connect your Router/PC to Internet for Installation.
-- Configure your router or pc to Extender/Repeater Mode and done!.
-- Openwrt iptables `NAT`  doesn't work properly on version 1.8.7.
-- Applicable only for openwrt router, linux and rooted phones.
-- Take note that the `wlan0` is your `ISP` and the destination is `eth0`.
-- Check your interfaces before proceeding to auto install otherwise if doesn't match you need to manually edit wlan0 and eth0 to your current interface where the traffic goes on.
+## [Note!]
+> Connect your Router/PC to Internet for Installation.
+> Configure your router or pc to Extender/Repeater Mode and done!.
+> Openwrt iptables `NAT`  doesn't work properly on version 1.8.7.
+> Applicable only for openwrt router, linux and rooted phones.
+> Take note that the `wlan0` is your `ISP` and the destination is `eth0`.
+> Check your interfaces before proceeding to auto install otherwise if doesn't match you need to manually edit wlan0 and eth0 to your current interface where the traffic goes on.
 
 # IPTables and IP6Tables to Bypass Tethering Restriction
+> interface is unspecified so that all incoming packets will be altered and mangled before prerouting decision is made 
 ```sh
 # IPTABLES for IPv4 (recommended)
 # _______________________________
@@ -49,9 +50,9 @@ iptables -F
 iptables -t nat -F
 iptables -t mangle -F
 
-# Change incoming TTL=1 to TTL=65 on wlan0
-iptables -t mangle -A PREROUTING -i wlan0 -j TTL --ttl-set 65
-iptables -t mangle -A POSTROUTING -o wlan0 -j TTL --ttl-set 64
+# Change incoming TTL=1 to TTL=64
+iptables -t mangle -A PREROUTING -j TTL --ttl-set 64
+
 
 # Enable NAT (Masquerade) for eth0
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
@@ -66,14 +67,8 @@ iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 ip6tables -F
 ip6tables -t mangle -F
 
-# Change incoming hop limit=1 to hop limit=65 on wlan0
-ip6tables -t mangle -A PREROUTING -i wlan0 -j HL --hl-set 65
-ip6tables -t mangle -A POSTROUTING -o wlan0 -j HL --hl-set 64
-
-# Allow forwarding between wlan0 and eth0
-ip6tables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
-ip6tables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
-
+# Change incoming hop limit=1 to hop limit=64
+ip6tables -t mangle -A PREROUTING -j HL --hl-set 64
 ```
 
 # How to check?
@@ -86,17 +81,13 @@ iptables -vnL --line-numbers
 ip6tables -vnL ---line-numbers
 ```
 # Features
-- Bypass ISP Hotspot sharing restriction
-- Support 65 Hops Nodes
+- Bypass ISP Hotspot sharing restriction (allow tethering)
+- Support 64 Hop Nodes
 - Can Shared or tethered across multiple devices
-- Free Internet
     
 # Tested on
-- Termux Custom Bridge interfaces
-- All OpenWRT/XWRT/IMWRT
-- All Debian based Distros
-- All Arch based Distro
-- Almost all OS supported by Iptables
+- All OpenWRT Router
+- All Linux distros
 
 # How to clear Iptables existing rules?
 • IPv4 iptables
@@ -114,13 +105,14 @@ ip6tables -t mangle -F
 
 To achieve the setup where incoming packets with TTL=1 on the wlan0 interface are modified to have TTL=64 and forwarded to the eth0 interface, and the outgoing packets are modified with TTL=64 when sent back from eth0 to wlan0, you can configure nftables as follows:
 
-## Note!
-- Connect your Router/PC to Internet for Installation.
-- Configure your router or pc to Extender/Repeater Mode and done!.
-- Openwrt iptables `NAT`  doesn't work properly on version 1.8.7.
-- Applicable only for openwrt router, linux and rooted phones.
-- Take note that the `wlan0` is your `ISP` and the destination is `eth0/LAN`.
-- Check your interfaces before proceeding to auto install otherwise if doesn't match you need to manually edit wlan0 and eth0 to your current interface where the traffic goes on.
+## [Note!]
+> Connect your Router/PC to Internet for Installation.
+> Configure your router to Extender/Repeater Mode.
+> Openwrt iptables `NAT POSTROUTING`  doesn't work properly on version 1.8.7.
+> Applicable only for openwrt router, linux and rooted phones.
+> Take note that the `wlan0` is your `ISP` and the destination is `eth0/LAN`.
+> Check your interfaces before proceeding to auto install otherwise if doesn't match you need to manually edit wlan0 and eth0 to your current interface where the traffic goes on.
+
 
 # Auto install for Linux
 ```sh
@@ -129,11 +121,6 @@ sudo apt update ; sudo apt install curl ; curl https://raw.githubusercontent.com
 # Auto install for Openwrt using Nftables.conf (ipv4 only)
 ```sh
 opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sh
-```
-
-# Auto install for OpenWRT using Nftables.nft (recommended)
-```sh
-cd /etc/nftables.d/ && wget https://raw.githubusercontent.com/xiv3r/anti-tethering-bypasser/refs/heads/main/12-mangle-ttl-65.nft && fw4 check && /etc/init.d/firewall restart
 ```
 
 ```sh
@@ -161,37 +148,32 @@ nftables list ruleset && nft list ruleset
 ```
 
 # Using nftables.nft (recommended)
-`etc/nftables.d/`
+> /etc/nftables.d/
 ```sh
-chain mangle_prerouting_ttl65 {
+chain mangle_prerouting_ttl64 {
   type filter hook prerouting priority 300; policy accept;
-  iifname "wlan0" counter ip ttl set 65
-  iifname "wlan0" counter ip6 hoplimit set 65
-}
-
-chain mangle_postrouting_ttl65 {
-  type filter hook postrouting priority 300; policy accept;
-  oifname "wlan0" counter ip ttl set 65
-  oifname "wlan0" counter ip6 hoplimit set 65
+   counter ip ttl set 64
+   counter ip6 hoplimit set 64
 }
 ```
-- ## Install Nftables.nft
+# Install Nftables.nft (stable & recommended)
+> fw4 check passed
 ```sh
 cd /etc/nftables.d/ && wget https://raw.githubusercontent.com/xiv3r/anti-tethering-bypasser/refs/heads/main/12-mangle-ttl-65.nft && fw4 check && /etc/init.d/firewall restart
 ```
 <img src="https://github.com/xiv3r/anti-tethering-bypasser/blob/main/Nftables.nft.png">
 
-## Check nftables existing ruleset
+# Check nftables existing ruleset
 ```sh
 fw4 check && nft list ruleset
 ```
-## Explanation:
+# Explanation:
 
-Prerouting chain: Incoming packets on wlan0 with TTL=1 are changed to TTL=64 before forwarding.
+> Prerouting chain: Incoming packets on wlan0 with TTL=1 are changed to TTL=64 before forwarding.
 
-Postrouting chain: Outgoing packets through wlan0 are set to TTL=64.
+> Postrouting chain: Outgoing packets through wlan0 are set to TTL=64.
 
-Forward chain: Allows forwarding between wlan0 and eth0 in both directions.
+> Forward chain: Allows forwarding between wlan0 and eth0 in both directions.
 
 <h1 align="center">Windows
 </h1>
