@@ -20,7 +20,7 @@ Openwrt/Linux WiFi Repeater/Extender mode
 
 10.0.0.1 ttl=64
  </h1>
-
+ 
  <h1 align="center"> Using IPTABLES & IP6TABLES </h1>
  
 
@@ -32,7 +32,10 @@ Openwrt/Linux WiFi Repeater/Extender mode
 ```sh
 opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
 ```
-    
+# Android
+
+[https://github.com/Mygod/VPNHotspot/](https://github.com/Mygod/VPNHotspot/)
+
 ## [Note!]
 > Connect your Router/PC to Internet for Installation.
 > Configure your router or pc to Extender/Repeater Mode and done!.
