@@ -26,17 +26,19 @@ Openwrt/Linux WiFi Repeater/Extender mode
 
 # Auto Install IPTABLES for Linux distro
 ```sh
- sudo apt update ; sudo apt install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo sh
+ sudo apt update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo sh
 ```
 # Auto Install IPTABLES/IP6TABLES for OpenWRT router
 ```sh
-opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
+opkg update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
 ```
 # Android
+> need root
 
 [https://github.com/Mygod/VPNHotspot/](https://github.com/Mygod/VPNHotspot/)
 
-## [Note!]
+# Note
+> [!Note]
 > Connect your Router/PC to Internet for Installation.
 > Configure your router or pc to Extender/Repeater Mode and done!.
 > Openwrt iptables `NAT`  doesn't work properly on version 1.8.7.
@@ -109,7 +111,8 @@ ip6tables -t mangle -F
 
 To achieve the setup where incoming packets with TTL=1 on the wlan0 interface are modified to have TTL=64 and forwarded to the eth0 interface, and the outgoing packets are modified with TTL=64 when sent back from eth0 to wlan0, you can configure nftables as follows:
 
-## [Note!]
+# Setup
+> [!Note]
 > Connect your Router/PC to Internet for Installation.
 > Configure your router to Extender/Repeater Mode.
 > Openwrt iptables `NAT POSTROUTING`  doesn't work properly on version 1.8.7.
@@ -132,11 +135,11 @@ cd /etc/nftables.d/ && wget https://raw.githubusercontent.com/xiv3r/anti-tetheri
 
 # Auto install for Linux
 ```sh
-sudo apt update ; sudo apt install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sudo sh
+sudo apt update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sudo sh
 ```
 # Auto install for Openwrt using Nftables.conf (ipv4 only)
 ```sh
-opkg update ; opkg install curl ; curl https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sh
+opkg update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sh
 ```
 
 ```sh
@@ -179,7 +182,7 @@ chain mangle_prerouting_ttl64 {
 ```sh
 fw4 check && nft list ruleset
 ```
-# Explanation:
+## Explanation
 
 > Prerouting chain: Incoming packets on wlan0 with TTL=1 are changed to TTL=64 before forwarding.
 
