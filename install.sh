@@ -46,10 +46,9 @@ net.ipv6.conf.all.forwarding=1
 net.ipv4.ip_forward=1
 " >> /etc/sysctl.conf
 sysctl -p
-
-echo "Installing iptables rule in /etc/rc.local..."
-sed -i 's/exit 0//' /etc/rc.local
-
+###
+echo "Installing iptables rule in /etc/iptables/rules.v4..."
+###
 echo "
 #!/bin/sh
 
@@ -62,15 +61,15 @@ ip6tables -t mangle -A PREROUTING -j HL --hl-set 64
 # Enable NAT (Masquerade) for eth0
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
-# Allow forwarding between wlan0 and eth0
-iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
-iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 exit 0
-" >> /etc/rc.local
-
-chmod +x /etc/rc.local
-sh /etc/rc.local
-
+" >> /etc/iptables/rules.v4
+###
+chmod +x /etc/iptables/rules.v4
+###
+sh /etc/iptables/rules.v4
+###
 echo 'Done'
+###
 iptables -vnL --line-numbers
+###
 ip6tables -vnL --line-numbers
