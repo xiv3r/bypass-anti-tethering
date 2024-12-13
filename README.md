@@ -202,7 +202,12 @@ fw4 check && nft list ruleset
 <h1 align="center">Windows
 </h1>
 
-```sh
-netsh int ipv4 set glob defaultcurhoplimit=65
-netsh int ipv6 set glob defaultcurhoplimit=65
+```
+netsh int ipv4 set glob defaultcurhoplimit=64
+netsh int ipv6 set glob defaultcurhoplimit=64
+```
+> alternative
+```
+netsh interface ipv4 set global ttl=64
+netsh interface ipv6 set global ttl=64
 ```
