@@ -6,8 +6,7 @@
 
 <h4 align="center">
  
-   Wireless Sharing Protection (anti-tethering) is a mechanism employed by wisp carriers to restrict tethering or hotspot sharing on wifi users by modifying the interface broadcast ttl value to 1 hops. To circumvent these restrictions, iptables can be utilized to modify network traffic characteristics, allowing users to bypass wireless sharing protection (anti-tethering) effectively.
-
+   Anti-Tethering bypasser allow you to expand the network even if your isp restricts the tethering to 1 hop. By increasing the ttl value using iptables and nftables allows you to bypass the restriction.
 <h1 align="center">
  
  10.0.0.1 ttl=1
