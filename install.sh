@@ -41,15 +41,16 @@ else
 fi
 
 # Ipv4 and Ipv6 Forwarding
-echo "
+cat >>/etc/sysctl.conf << EOF
 net.ipv6.conf.all.forwarding=1
 net.ipv4.ip_forward=1
-" >> /etc/sysctl.conf
+EOF
+###
 sysctl -p
 ###
 echo "Installing iptables rule in /etc/iptables/rules.v4..."
 ###
-echo "
+cat >/etc/iptables/rules.v4 << EOF
 #!/bin/sh
 
 # Change incoming TTL=1 to TTL=64 on wlan0
@@ -61,8 +62,7 @@ ip6tables -t mangle -A PREROUTING -j HL --hl-set 64
 # Enable NAT (Masquerade) for eth0
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
-exit 0
-" >> /etc/iptables/rules.v4
+EOF
 ###
 chmod +x /etc/iptables/rules.v4
 ###
