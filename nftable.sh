@@ -40,35 +40,39 @@ else
 fi
 
 # Ipv4 and Ipv6 Forwarding
-echo "net.ipv6.conf.all.forwarding=1" >> /etc/sysctl.conf
-echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+cat >>/etc/sysctl.conf << EOF
+net.ipv6.conf.all.forwarding=1
+net.ipv4.ip_forward=1
+EOF
+###
 sysctl -p
-
+###
 echo "adding nftables to /etc/nftables.conf"
+###
+cat >>/etc/nftables.conf << EOF
+#!/bin/sh
 
-echo "#!/bin/sh" > /etc/nftables.conf
-
-# NFTABLE for IPv4 (recommended)
-# ______________________________
-
-echo "nft add table inet custom_table" >> /etc/nftables.conf
+# NFTABLE for IPv4
+nft add table inet custom_table
 # Prerouting: Change TTL on incoming packets from wlan0
-echo "nft add chain inet custom_table prerouting { type filter hook prerouting priority 0 \; }" >> /etc/nftables.conf
-echo "nft add rule inet custom_table prerouting iif "wlan0" ip ttl set 65" >> /etc/nftables.conf
+nft add chain inet custom_table prerouting { type filter hook prerouting priority 0 \; }
+nft add rule inet custom_table prerouting iif "wlan0" ip ttl set 64
 
 # Postrouting: Enable masquerading on eth0 and set outgoing TTL for wlan0
-echo "nft add chain inet custom_table postrouting { type nat hook postrouting priority 100 \; }" >> /etc/nftables.conf
-echo "nft add rule inet custom_table postrouting oif "eth0" masquerade" >> /etc/nftables.conf
-echo "nft add rule inet custom_table postrouting oif "wlan0" ip ttl set 64" >> /etc/nftables.conf
+nft add chain inet custom_table postrouting { type nat hook postrouting priority 100 \; }
+nft add rule inet custom_table postrouting oif "eth0" masquerade
+nft add rule inet custom_table postrouting oif "wlan0" ip ttl set 64
 
 # Forwarding: Allow traffic between wlan0 and eth0 in both directions
-echo "nft add chain inet custom_table forward { type filter hook forward priority 0 \; }" >> /etc/nftables.conf
-echo "nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept" >> /etc/nftables.conf
-echo "nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept" >> /etc/nftables.conf
-
+nft add chain inet custom_table forward { type filter hook forward priority 0 \; }
+nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept
+nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept
+EOF
+###
 chmod +x /etc/nftables.conf
+###
 sh /etc/nftables.conf
-
+###
 echo "Done installing config to /etc/nftables.conf"
 echo "nftable is running now on wlan0 to eth0 with a ttl=64"
 nftables list ruleset
