@@ -1,9 +1,3 @@
- <h1 align="center"><summary>
-  
-### [Bypass WiFi Anti-Tethering (TTL /HL=1)](https://github.com/xiv3r/anti-tethering-bypasser)
-
-</summary></h1>
-
 <h4 align="center">
  
    Anti-Tethering bypasser allow you to expand the network even if your isp restricts the tethering to 1 hop. By increasing the ttl value using iptables and nftables allows you to bypass the restriction.
