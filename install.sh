@@ -59,9 +59,6 @@ iptables -t mangle -A PREROUTING -j TTL --ttl-set 64
 # Change incoming hop limit=1 to hop limit=64 on wlan0
 ip6tables -t mangle -A PREROUTING -j HL --hl-set 64
 
-# Enable NAT (Masquerade) for eth0
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-
 EOF
 ###
 chmod +x /etc/iptables/rules.v4
