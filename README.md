@@ -48,6 +48,7 @@ iptables -t mangle -F
 
 # Change incoming TTL=1 to TTL=64
 iptables -t mangle -A PREROUTING -j TTL --ttl-set 64
+iptables -t mangle -A POSTROUTING -j TTL --ttl-set 64
 
 # IP6TABLES for IPv6 (optional)
 # _____________________________
@@ -124,10 +125,16 @@ opkg update && opkg install wget bash ; wget -qO- https://raw.githubusercontent.
 
 ```sh
 chain mangle_prerouting_ttl64 {
-    type filter hook prerouting priority 300; policy accept;
-    ip ttl set 64
-    ip6 hoplimit set 64
-}
+                type filter hook prerouting priority 300; policy accept;
+                ip ttl set 64
+                ip6 hoplimit set 64
+        }
+
+chain mangle_postrouting_ttl64 {
+                type filter hook postrouting priority 300; policy accept;
+                ip ttl set 64
+                ip6 hoplimit set 64
+        }
 ```
 
 # Check the existing ruleset
@@ -144,6 +151,14 @@ nft 'add chain inet mangle mangle_prerouting_ttl64 { type filter hook prerouting
 nft 'add rule inet mangle mangle_prerouting_ttl64 ip ttl set 64'
 
 nft 'add rule inet mangle mangle_prerouting_ttl64 ip6 hoplimit set 64'
+
+nft 'add chain inet mangle mangle_postrouting_ttl64 { type filter hook postrouting priority 300; policy accept; }'
+
+nft 'add rule inet mangle mangle_postrouting_ttl64 ip ttl set 64'
+
+nft 'add rule inet mangle mangle_postrouting_ttl64 ip6 hoplimit set 64'
+
+
 ```
 
 <img src="https://github.com/xiv3r/anti-tethering-bypasser/blob/main/Nftables.nft.png">
