@@ -1,4 +1,4 @@
-<h4 align="center">
+<h1 align="center">
  
    Anti-Tethering bypasser allow you to expand the network even if your isp restricts the tethering to 1 hop. By increasing the ttl value using iptables and nftables allows you to bypass the restriction.
 <h1 align="center">
@@ -17,13 +17,13 @@ Openwrt/Linux WiFi Repeater/Extender mode
  <h1 align="center"> Using IPTABLES & IP6TABLES </h1>
  
 
-# Auto Install IPTABLES for Linux distro
+### Auto Install IPTABLES for Linux distro
 ```sh
- sudo apt update && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo bash
+ sudo apt update && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install | sudo bash
 ```
-# Auto Install IPTABLES/IP6TABLES for OpenWRT router
+### Auto Install IPTABLES/IP6TABLES for OpenWRT router
 ```sh
-opkg update && opkg install bash wget && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | bash
+opkg update && opkg install bash wget && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install | bash
 ```
 # Android
 > need root
@@ -110,16 +110,16 @@ To achieve the setup where incoming packets with TTL=1 on the wlan0 interface ar
 
 > support `ipv6` ISP 
 ```sh
-wget -qO- https://raw.githubusercontent.com/xiv3r/anti-tethering-bypasser/refs/heads/main/ttl64.sh | bash
+wget -qO- https://raw.githubusercontent.com/xiv3r/anti-tethering-bypasser/refs/heads/main/ttl64 | bash
 ```
 
 # Auto install for Linux
 ```sh
-sudo apt update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sudo bash
+sudo apt update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable | sudo bash
 ```
 # Auto install for Openwrt using Nftables
 ```sh
-opkg update && opkg install wget bash ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | bash
+opkg update && opkg install wget bash ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable | bash
 ```
 
 ```sh
