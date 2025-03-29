@@ -115,11 +115,11 @@ wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/hea
 
 # Auto install for Linux
 ```sh
-sudo apt update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable | sudo bash
+sudo apt update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftables | sudo bash
 ```
 # Auto install for Openwrt using Nftables
 ```sh
-opkg update && opkg install wget bash ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable | bash
+opkg update && opkg install wget bash ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftables | bash
 ```
 
 ```sh
