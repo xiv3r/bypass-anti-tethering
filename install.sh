@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # List of packages to install on OpenWRT
 OPENWRT_PACKAGES="iptables-mod-ipopt nftables iptables-zz-legacy iptables ip6tables ip6tables-zz-legacy"
@@ -51,19 +51,17 @@ sysctl -p
 echo "Installing iptables rule in /etc/iptables/rules.v4..."
 ###
 cat >/etc/iptables/rules.v4 << EOF
-#!/bin/sh
-
-# Change incoming TTL=1 to TTL=64 on wlan0
+# Append the incoming ipv4 TTL from 1 to 64 in wlan0 before routing.
 iptables -t mangle -A PREROUTING -j TTL --ttl-set 64
 
-# Change incoming hop limit=1 to hop limit=64 on wlan0
+# Append the incoming ipv6 hop limit from 1 to 64 in wlan0 before routing.
 ip6tables -t mangle -A PREROUTING -j HL --hl-set 64
 
 EOF
 ###
 chmod +x /etc/iptables/rules.v4
 ###
-sh /etc/iptables/rules.v4
+bash /etc/iptables/rules.v4
 ###
 echo 'Done'
 ###
