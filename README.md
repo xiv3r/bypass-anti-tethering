@@ -23,7 +23,7 @@ Openwrt/Linux WiFi Repeater/Extender mode
 ```
 # Auto Install IPTABLES/IP6TABLES for OpenWRT router
 ```sh
-opkg update && opkg install bash && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | bash
+opkg update && opkg install bash wget && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | bash
 ```
 # Android
 > need root
@@ -44,26 +44,13 @@ opkg update && opkg install bash && wget -qO- https://raw.githubusercontent.com/
 ```sh
 # IPTABLES for IPv4 (recommended)
 # _______________________________
-
-iptables -F
-iptables -t nat -F
 iptables -t mangle -F
 
 # Change incoming TTL=1 to TTL=64
 iptables -t mangle -A PREROUTING -j TTL --ttl-set 64
 
-
-# Enable NAT (Masquerade) for eth0
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-
-# Allow forwarding between wlan0 and eth0
-iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
-iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
-
 # IP6TABLES for IPv6 (optional)
 # _____________________________
-
-ip6tables -F
 ip6tables -t mangle -F
 
 # Change incoming hop limit=1 to hop limit=64
@@ -132,7 +119,7 @@ sudo apt update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-
 ```
 # Auto install for Openwrt using Nftables
 ```sh
-opkg update && opkg install bash ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | bash
+opkg update && opkg install wget bash ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | bash
 ```
 
 ```sh
