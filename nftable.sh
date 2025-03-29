@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # List of packages to install on OpenWRT
 OPENWRT_PACKAGES="nftables kmod-nft-nat kmod-nft-core kmod-nfnetlink"
@@ -47,32 +47,19 @@ EOF
 ###
 sysctl -p
 ###
-echo "adding nftables to /etc/nftables.conf"
+echo "adding nftables to /etc/nftables.d/ttl64.nft"
 ###
-cat >>/etc/nftables.conf << EOF
-#!/bin/sh
-
-# NFTABLE for IPv4
-nft add table inet custom_table
-# Prerouting: Change TTL on incoming packets from wlan0
-nft add chain inet custom_table prerouting { type filter hook prerouting priority 0 \; }
-nft add rule inet custom_table prerouting iif "wlan0" ip ttl set 64
-
-# Postrouting: Enable masquerading on eth0 and set outgoing TTL for wlan0
-nft add chain inet custom_table postrouting { type nat hook postrouting priority 100 \; }
-nft add rule inet custom_table postrouting oif "eth0" masquerade
-nft add rule inet custom_table postrouting oif "wlan0" ip ttl set 64
-
-# Forwarding: Allow traffic between wlan0 and eth0 in both directions
-nft add chain inet custom_table forward { type filter hook forward priority 0 \; }
-nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept
-nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept
+cat >>/etc/nftables.d/ttl64.nft << EOF
+chain mangle_prerouting_ttl64 {
+  type filter hook prerouting priority 300; policy accept;
+   counter ip ttl set 64
+   counter ip6 hoplimit set 64
+}
 EOF
 ###
-chmod +x /etc/nftables.conf
+fw4 check
+/etc/init.d/firewall restart
 ###
-sh /etc/nftables.conf
-###
-echo "Done installing config to /etc/nftables.conf"
+echo "Done installing config to /etc/nftables.d/"
 echo "nftable is running now on wlan0 to eth0 with a ttl=64"
 nftables list ruleset
