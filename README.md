@@ -25,11 +25,11 @@ Openwrt/Linux WiFi Repeater/Extender mode
 
 # Auto Install IPTABLES for Linux distro
 ```sh
- sudo apt update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo sh
+ sudo apt update && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sudo bash
 ```
 # Auto Install IPTABLES/IP6TABLES for OpenWRT router
 ```sh
-opkg update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | sh
+opkg update && opkg install bash && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install.sh | bash
 ```
 # Android
 > need root
@@ -129,44 +129,18 @@ To achieve the setup where incoming packets with TTL=1 on the wlan0 interface ar
 
 > support `ipv6` ISP 
 ```sh
-wget -qO- https://raw.githubusercontent.com/xiv3r/anti-tethering-bypasser/refs/heads/main/ttl64.sh | sh
+wget -qO- https://raw.githubusercontent.com/xiv3r/anti-tethering-bypasser/refs/heads/main/ttl64.sh | bash
 ```
 
 # Auto install for Linux
 ```sh
-sudo apt update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sudo sh
+sudo apt update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sudo bash
 ```
-# Auto install for Openwrt using Nftables.conf (ipv4 only)
+# Auto install for Openwrt using Nftables
 ```sh
-opkg update ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | sh
+opkg update && opkg install bash ; wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftable.sh | bash
 ```
 
-```sh
-# NFTABLE for IPv4 (recommended)
-# ______________________________
-
-nft add table inet custom_table
-# Prerouting: Change TTL on incoming packets from wlan0
-nft add chain inet custom_table prerouting { type filter hook prerouting priority 0 \; }
-nft add rule inet custom_table prerouting iif "wlan0" ip ttl set 65
-
-# Postrouting: Enable masquerading on eth0 and set outgoing TTL for wlan0
-nft add chain inet custom_table postrouting { type nat hook postrouting priority 100 \; }
-nft add rule inet custom_table postrouting oif "eth0" masquerade
-nft add rule inet custom_table postrouting oif "wlan0" ip ttl set 64
-
-# Forwarding: Allow traffic between wlan0 and eth0 in both directions
-nft add chain inet custom_table forward { type filter hook forward priority 0 \; }
-nft add rule inet custom_table forward iif "wlan0" oif "eth0" accept
-nft add rule inet custom_table forward iif "eth0" oif "wlan0" accept
-```
-# Check existing ruleset
-```sh
-nftables list ruleset && nft list ruleset
-```
-
-# Using nftables.nft (recommended)
-> For config path /etc/nftables.d/ttl64.nft
 ```sh
 chain mangle_prerouting_ttl64 {
   type filter hook prerouting priority 300; policy accept;
@@ -174,7 +148,13 @@ chain mangle_prerouting_ttl64 {
    counter ip6 hoplimit set 64
 }
 ```
-> For command line instructions 
+
+# Check the existing ruleset
+```sh
+nftables list ruleset && nft list ruleset
+```
+
+# For cli
 ```
 # Create the chain
 nft add chain ip mangle mangle_prerouting_ttl64 { type filter hook prerouting priority 300; policy accept; }
