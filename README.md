@@ -110,7 +110,7 @@ To achieve the setup where incoming packets with TTL=1 on the wlan0 interface ar
 
 > support `ipv6` ISP 
 ```sh
-wget -qO- https://raw.githubusercontent.com/xiv3r/anti-tethering-bypasser/refs/heads/main/ttl64 | bash
+wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftables | bash
 ```
 
 # Auto install for Linux
