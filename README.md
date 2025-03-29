@@ -124,9 +124,9 @@ opkg update && opkg install wget bash ; wget -qO- https://raw.githubusercontent.
 
 ```sh
 chain mangle_prerouting_ttl64 {
-  type filter hook prerouting priority 300; policy accept;
-   counter ip ttl set 64
-   counter ip6 hoplimit set 64
+    type filter hook prerouting priority 300; policy accept;
+    ip ttl set 64
+    ip6 hoplimit set 64
 }
 ```
 
@@ -137,12 +137,13 @@ nftables list ruleset && nft list ruleset
 
 # For cli
 ```
-# Create the chain
-nft add chain ip mangle mangle_prerouting_ttl64 { type filter hook prerouting priority 300; policy accept; }
+nft 'add table inet mangle'
 
-# Add rules to the chain
-nft add rule ip mangle mangle_prerouting_ttl64 counter ip ttl set 64
-nft add rule ip mangle mangle_prerouting_ttl64 counter ip6 hoplimit set 64
+nft 'add chain inet mangle mangle_prerouting_ttl64 { type filter hook prerouting priority 300; policy accept; }'
+
+nft 'add rule inet mangle mangle_prerouting_ttl64 ip ttl set 64'
+
+nft 'add rule inet mangle mangle_prerouting_ttl64 ip6 hoplimit set 64'
 ```
 
 <img src="https://github.com/xiv3r/anti-tethering-bypasser/blob/main/Nftables.nft.png">
