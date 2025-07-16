@@ -47,15 +47,14 @@ opkg update && opkg install bash wget && wget -qO- https://raw.githubusercontent
 iptables -t mangle -F
 
 # Change incoming TTL=1 to TTL=64
-iptables -t mangle -A PREROUTING -j TTL --ttl-set 64
-iptables -t mangle -A POSTROUTING -j TTL --ttl-set 64
+iptables -t mangle -I PREROUTING -j TTL --ttl-set 64
 
 # IP6TABLES for IPv6 (optional)
 # _____________________________
 ip6tables -t mangle -F
 
 # Change incoming hop limit=1 to hop limit=64
-ip6tables -t mangle -A PREROUTING -j HL --hl-set 64
+ip6tables -t mangle -I PREROUTING -j HL --hl-set 64
 ```
 
 # How to check?
