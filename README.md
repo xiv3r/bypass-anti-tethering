@@ -1,7 +1,7 @@
 # Anti Tethering Bypasser
 Anti tethering bypass tool that allows you to expand the network even if your isp restricts the tethering limiy to 1 hop. By increasing the ttl value using iptables and nftables allows you to bypass the restriction.
 
-<h1 align="center">
+<h3 align="center">
 10.0.0.1 ttl=1
 
 👇
