@@ -1,24 +1,18 @@
-#!/bin/bash
+#!/bin/sh
 
 # Ipv4 and Ipv6 Forwarding
-cat >>/etc/sysctl.conf << EOF
+cat >> /etc/sysctl.conf << EOF
 net.ipv6.conf.all.forwarding=1
 net.ipv4.ip_forward=1
 EOF
 ###
 sysctl -p
 ###
-echo "adding nftables to /etc/nftables.d/ttl64.nft"
+echo "adding nftables to /etc/nftables.d/ttl-64.nft"
 ###
-cat >>/etc/nftables.d/ttl64.nft << EOF
+cat > /etc/nftables.d/ttl-64.nft << EOF
 chain mangle_prerouting_ttl64 {
                 type filter hook prerouting priority 300; policy accept;
-                ip ttl set 64
-                ip6 hoplimit set 64
-        }
-
-chain mangle_postrouting_ttl64 {
-                type filter hook postrouting priority 300; policy accept;
                 ip ttl set 64
                 ip6 hoplimit set 64
         }
@@ -28,5 +22,5 @@ fw4 check
 /etc/init.d/firewall restart
 ###
 echo "Done installing config to /etc/nftables.d/"
-echo "nftable is running now with a ttl=64"
+echo "nftable increased the ttl=1 to ttl=64"
 nftables list ruleset
