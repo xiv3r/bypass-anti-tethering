@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # List of packages to install on OpenWRT
 OPENWRT_PACKAGES="iptables-mod-ipopt nftables iptables-zz-legacy ip6tables-zz-legacy"
