@@ -31,7 +31,7 @@ sudo apt update && sudo apt install wget -y && wget -qO- https://raw.githubuserc
 ```
 - ## Auto install for OpenWRT
 ```
-opkg update && opkg install wget && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/iptables-openwrt | sh
+apk update && apk install wget && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/iptables-openwrt | sh
 ```
 
 # IPTables and IP6Tables config
