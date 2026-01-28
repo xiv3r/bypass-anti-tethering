@@ -1,5 +1,5 @@
-# Anti Tethering Bypasser
-Anti tethering bypass tool that allows you to expand the network even if your isp restricts the tethering limiy to 1 hop. By increasing the ttl value using iptables and nftables allows you to bypass the restriction.
+# Bypass Anti Tethering
+Anti tethering bypass tool allows you to expand the network even if your isp restricts the tethering limit to 1 ttl/hop. By increasing the ttl value using iptables or nftables you can bypass the restrictions.
 
 <h3 align="center">
 10.0.0.1 ttl=1
@@ -27,11 +27,11 @@ iptables -t mangle -A PREROUTING -j TTL --ttl-set 64
 
 - ## Auto install for Linux distro
 ```
-sudo apt update && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install | sudo sh
+sudo apt update && sudo apt install wget -y && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/iptables-linux| sudo bash
 ```
 - ## Auto install for OpenWRT
 ```
-opkg update && opkg install wget && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/install | sh
+opkg update && opkg install wget && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/iptables-openwrt | sh
 ```
 
 # IPTables and IP6Tables config
@@ -46,11 +46,11 @@ ip6tables -t mangle -A PREROUTING -j HL --hl-set 64
 
 # How to Check?
 • IPv4 iptables
-```sh
+```
 iptables -vnL --line-numbers
 ```
 • IPv6 ip6tables
-```sh
+```
 ip6tables -vnL ---line-numbers
 ```
 
@@ -61,7 +61,7 @@ ip6tables -vnL ---line-numbers
    
 - ## Auto Install for Linux Distro 
 ```
-sudo apt update && sudo apt install -y iptables nftables wget && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftables | sudo sh
+sudo apt update && sudo apt install -y nftables wget && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftables | sudo bash
 ```
 - ## Auto Install for Openwrt
 ```sh
