@@ -27,7 +27,7 @@ iptables -t mangle -A PREROUTING -j TTL --ttl-set 64
 
 - ## Auto install for Linux distro
 ```
-sudo apt update && sudo apt install wget -y && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/iptables-linux| sudo bash
+sudo apt update && sudo apt install wget -y && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/iptables-linux | sudo bash
 ```
 - ## Auto install for OpenWRT
 ```
@@ -54,18 +54,20 @@ iptables -vnL --line-numbers
 ip6tables -vnL ---line-numbers
 ```
 
------------------
+------
+
+<br><br></br>
 
 # NFTABLES
 > Nftables (stable & recommended)
    
 - ## Auto Install for Linux Distro 
 ```
-sudo apt update && sudo apt install -y nftables wget && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftables | sudo bash
+sudo apt update && sudo apt install -y nftables wget && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftables-linux | sudo bash
 ```
 - ## Auto Install for Openwrt
-```sh
-opkg update && opkg install wget && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftables | sh
+```
+apk update && apk install wget && wget -qO- https://raw.githubusercontent.com/xiv3r/bypass-anti-tethering/refs/heads/main/nftables-openwrt | sh
 ```
 # Nftables config
 ```
