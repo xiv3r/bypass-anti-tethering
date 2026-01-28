@@ -1,1 +1,5 @@
+#!/bin/sh
+
+apk update
+apk install iptables-mod-ipopt nftables iptables-zz-legacy ip6tables-zz-legacy
 
