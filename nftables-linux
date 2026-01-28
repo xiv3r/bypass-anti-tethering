@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Ipv4 and Ipv6 Forwarding
+sed -i '/net.ipv6.conf.all.forwarding=1/d' /etc/sysctl.conf
+sed -i '/net.ipv4.ip_forward=1/d' /etc/sysctl.conf
+cat >> /etc/sysctl.conf << EOF
+net.ipv6.conf.all.forwarding=1
+net.ipv4.ip_forward=1
+EOF
+sysctl -p
+
+###
+echo "adding nftables ttl bypass config to /etc/nftables.d/ttl-64.nft"
+###
+cat > /etc/nftables.d/ttl-64.nft << EOF
+chain mangle_prerouting_ttl64 {
+                type filter hook prerouting priority 300; policy accept;
+                ip ttl set 64
+                ip6 hoplimit set 64
+        }
+EOF
+nftables list ruleset
