@@ -1,6 +1,5 @@
 #!/bin/sh
 
-apk update
 apk install iptables-mod-ipopt iptables-zz-legacy ip6tables-zz-legacy
 
 # Ipv4 and Ipv6 Forwarding
