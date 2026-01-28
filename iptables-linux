@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Ipv4 and Ipv6 Forwarding
+sed -i '/net.ipv6.conf.all.forwarding=1/d' "/etc/sysctl.conf"
+sed -i '/net.ipv4.ip_forward=1/d' "/etc/sysctl.conf"
+cat >> /etc/sysctl.conf << EOF
+net.ipv6.conf.all.forwarding=1
+net.ipv4.ip_forward=1
+EOF
+sysctl -p
+###
+echo "Installing iptables rule in /etc/iptables/rules.v4..."
+###
+cat > /etc/iptables/rules.v4 << EOF
+# Append the incoming ipv4 TTL hop limit from 1 and increase to 64 before routing.
+iptables -t mangle -A PREROUTING -j TTL --ttl-set 64
+
+# Append the incoming ipv6 HL hop limit from 1 and increase to 64 before routing.
+ip6tables -t mangle -A PREROUTING -j HL --hl-set 64
+EOF
+chmod +x "/etc/iptables/rules.v4"
+bash "/etc/iptables/rules.v4"
+###
+echo 'Done'
+###
+iptables -vnL --line-numbers
+###
+ip6tables -vnL --line-numbers
