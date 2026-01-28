@@ -4,8 +4,8 @@ apk update
 apk install iptables-mod-ipopt nftables iptables-zz-legacy ip6tables-zz-legacy
 
 # Ipv4 and Ipv6 Forwarding
-sed -i '/net.ipv6.conf.all.forwarding=1/d' "/etc/sysctl.conf"
-sed -i '/net.ipv4.ip_forward=1/d' "/etc/sysctl.conf"
+sed -i '/net.ipv6.conf.all.forwarding=1/d' /etc/sysctl.conf
+sed -i '/net.ipv4.ip_forward=1/d' /etc/sysctl.conf
 cat >> /etc/sysctl.conf << EOF
 net.ipv6.conf.all.forwarding=1
 net.ipv4.ip_forward=1
@@ -23,6 +23,7 @@ ip6tables -t mangle -A PREROUTING -j HL --hl-set 64
 EOF
 chmod +x /etc/iptables/rules.v4
 sh /etc/iptables/rules.v4
+/etc/init.d/firewall restart 
 
 ###
 echo 'Done'
